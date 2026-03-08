@@ -131,36 +131,45 @@
     <section class="bg-white dark:bg-gray-900 py-16">
         <div class="max-w-7xl mx-auto px-6">
             <h2 class="text-3xl font-bold text-center mb-12 text-gray-800 dark:text-white">
-            Fitur Utama SIMOWARJO
+                Fitur Utama SIMOWARJO
             </h2>
             <div class="grid md:grid-cols-3 gap-8">
                 <!-- CARD -->
-                <div class="bg-gray-50 dark:bg-gray-800 p-8 rounded-xl shadow hover:shadow-lg transition">
-                    <h3 class="text-xl font-bold text-red-700 mb-3">
-                    Presensi & Penggajian
+                <div class="group bg-gray-50 dark:bg-gray-800 p-8 rounded-2xl border border-gray-200 dark:border-gray-700
+                            shadow-sm transition-all duration-500 ease-out
+                            hover:-translate-y-3 hover:scale-[1.03] hover:shadow-2xl hover:border-red-500">
+
+                    <h3 class="text-xl font-bold text-red-700 mb-3 group-hover:text-red-600 transition">
+                        Presensi & Penggajian
                     </h3>
-                    <p class="text-gray-600 dark:text-gray-300">
-                    Kelola absensi karyawan dan penggajian secara otomatis dan akurat.
+                    <p class="text-gray-600 dark:text-gray-300 leading-relaxed">
+                        Kelola absensi karyawan dan penggajian secara otomatis dan akurat.
                     </p>
                 </div>
 
                 <!-- CARD -->
-                <div class="bg-gray-50 dark:bg-gray-800 p-8 rounded-xl shadow hover:shadow-lg transition">
-                    <h3 class="text-xl font-bold text-red-700 mb-3">
-                    Pengelolaan Stok Barang
+                <div class="group bg-gray-50 dark:bg-gray-800 p-8 rounded-2xl border border-gray-200 dark:border-gray-700
+                            shadow-sm transition-all duration-500 ease-out
+                            hover:-translate-y-3 hover:scale-[1.03] hover:shadow-2xl hover:border-red-500">
+
+                    <h3 class="text-xl font-bold text-red-700 mb-3 group-hover:text-red-600 transition">
+                        Pengelolaan Stok Barang
                     </h3>
-                    <p class="text-gray-600 dark:text-gray-300">
-                    Memantau stok bahan baku dan barang secara real time.
+                    <p class="text-gray-600 dark:text-gray-300 leading-relaxed">
+                        Memantau stok bahan baku dan barang secara real time.
                     </p>
                 </div>
 
                 <!-- CARD -->
-                <div class="bg-gray-50 dark:bg-gray-800 p-8 rounded-xl shadow hover:shadow-lg transition">
-                    <h3 class="text-xl font-bold text-red-700 mb-3">
-                    Laporan Keuangan
+                <div class="group bg-gray-50 dark:bg-gray-800 p-8 rounded-2xl border border-gray-200 dark:border-gray-700
+                            shadow-sm transition-all duration-500 ease-out
+                            hover:-translate-y-3 hover:scale-[1.03] hover:shadow-2xl hover:border-red-500">
+
+                    <h3 class="text-xl font-bold text-red-700 mb-3 group-hover:text-red-600 transition">
+                        Laporan Keuangan
                     </h3>
-                    <p class="text-gray-600 dark:text-gray-300">
-                    Melihat laporan pemasukan dan pengeluaran secara detail.
+                    <p class="text-gray-600 dark:text-gray-300 leading-relaxed">
+                        Melihat laporan pemasukan dan pengeluaran secara detail.
                     </p>
                 </div>
             </div>
