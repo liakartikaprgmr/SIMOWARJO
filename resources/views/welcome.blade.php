@@ -37,15 +37,16 @@
                     </div>
                 </button>
                 <!-- Login Button -->
-                <div class="hidden md:block">
-                <button class="bg-red-700 text-white px-5 py-2 rounded-lg hover:bg-red-800">
-                Login
-                </button>
-                </div>
-                <!-- Mobile Button -->
-                <button id="menuBtn" class="md:hidden text-2xl dark:text-white">
-                    <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24">
-                        <path fill="currentColor" d="M2 16v2h20v-2zm0-5v2h20v-2zm0-5v2h20V6z"/></svg>
+                    <a href="{{ route('login') }}" class="hidden md:block">
+                        <button class="bg-red-700 text-white px-5 py-2 rounded-lg hover:bg-red-800">
+                            Login
+                        </button>
+                    </a>
+                <!-- Mobile Menu Button -->
+                <button id="menuBtn" class="md:hidden focus:outline-none">
+                    <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6 text-gray-700 dark:text-gray-200" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16" />
+                    </svg>
                 </button>
             </div>
         </div>
@@ -56,9 +57,11 @@
                 <a href="#" class="hover:text-red-600">Fitur</a>
                 <a href="#" class="hover:text-red-600">Tentang</a>
                 <a href="#" class="hover:text-red-600">Kontak</a>
-                <button class="bg-red-600 text-white px-5 py-2 rounded-lg w-full">
-                Login
-                </button>
+                <a href="{{ route('login') }}">
+                    <button class="bg-red-700 text-white px-5 py-2 rounded-lg w-full">
+                        Login
+                    </button>
+                </a>
             </div>
         </div>
     </nav>
@@ -80,9 +83,11 @@
                     </p>
 
                 <div class="flex gap-4 mb-10">
-                    <button class="bg-red-700 text-white px-6 py-3 rounded-lg">
-                        Masuk Sistem
-                    </button>
+                    <a href="{{ route('login') }}">
+                        <button class="bg-red-700 text-white px-6 py-3 rounded-lg">
+                            Masuk Sistem
+                        </button>
+                    </a>
                     <button class="border dark:border-gray-500 px-6 py-3 rounded-lg dark:text-white">
                         Pelajari Fitur
                     </button>
