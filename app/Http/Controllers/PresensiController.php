@@ -41,7 +41,7 @@ class PresensiController extends Controller
     Log::info('=== ABSENSI START ===', $request->all());
     
     try {
-        // 1. VALIDASI
+        // VALIDASI
         $request->validate([
             'image' => 'required|string', // 10MB base64
             'type' => 'required|in:masuk,pulang',
@@ -56,7 +56,7 @@ class PresensiController extends Controller
 
         Log::info("User ID: $userId | Type: {$request->type}");
 
-        // 2. CEK SUDAH ABSEN
+        // CEK SUDAH ABSEN
         $today = now()->toDateString();
         $sudahMasuk = DB::table('presensi')
             ->where('id_karyawan', $userId)
@@ -80,7 +80,7 @@ class PresensiController extends Controller
             return response()->json(['error' => 'Sudah absen pulang!'], 400);
         }
 
-        // 3. GPS CHECK
+        //GPS CHECK
         $kantorLat = -6.4915853;
         $kantorLng = 107.8846398;
         $radiusMax = 150;
@@ -116,7 +116,7 @@ class PresensiController extends Controller
             ], 400);
         }
 
-        // 5. SIMPAN FOTO
+        //SIMPAN FOTO
         Log::info('Image received: YES | Length: ' . strlen($request->image));
         
         $imageData = preg_replace('#^data:image/\w+;base64,#i', '', $request->image);
@@ -134,7 +134,7 @@ class PresensiController extends Controller
         
         Log::info('Foto saved: ' . $path);
 
-        // 6. SIMPAN DATABASE
+        //SIMPAN DATABASE
         DB::table('presensi')->insert([
             'id_karyawan' => $userId,
             'type' => $request->type,
