@@ -116,7 +116,7 @@ class PresensiController extends Controller
             ], 400);
         }
 
-        // 5. SIMPAN FOTO ✅ INI YANG PENTING!
+        // 5. SIMPAN FOTO
         Log::info('Image received: YES | Length: ' . strlen($request->image));
         
         $imageData = preg_replace('#^data:image/\w+;base64,#i', '', $request->image);
@@ -132,7 +132,7 @@ class PresensiController extends Controller
         Storage::disk('public')->makeDirectory(dirname($path));
         Storage::disk('public')->put($path, $imageBinary);
         
-        Log::info('✅ Foto saved: ' . $path);
+        Log::info('Foto saved: ' . $path);
 
         // 6. SIMPAN DATABASE
         DB::table('presensi')->insert([
@@ -147,7 +147,7 @@ class PresensiController extends Controller
             'updated_at' => now()
         ]);
 
-        Log::info('✅ ABSENSI BERHASIL!');
+        Log::info('ABSENSI BERHASIL!');
 
         return response()->json([
             'status' => 'success',
