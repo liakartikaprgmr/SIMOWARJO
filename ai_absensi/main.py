@@ -11,7 +11,6 @@ class AttendanceRequest(BaseModel):
     email: str
     image: str
 
-# 🔥 GLOBAL
 loaded_count = 0
 
 # Models
@@ -49,7 +48,6 @@ cursor.execute('''CREATE TABLE IF NOT EXISTS faces (
     email TEXT PRIMARY KEY, nama TEXT, signatures BLOB
 )''')
 
-# 🔥 SIMPLE VERSION - NO MYSQL
 def load_all_known_faces():
     cursor.execute('DELETE FROM faces')
     loaded = 0
@@ -86,7 +84,7 @@ def load_all_known_faces():
 
 # Load startup
 loaded_count = load_all_known_faces()
-print(f"✅ {loaded_count} karyawan ready!")
+print(f" {loaded_count} karyawan ready!")
 
 @app.get("/")
 def root():
@@ -122,7 +120,6 @@ def attendance(req: AttendanceRequest):
                  for s in stored_sigs]
     best_dist = min(distances)
     
-    # ✅ FIX: Convert numpy bool ke Python bool
     return {
         "match": bool(best_dist < 0.35),  # ← GANTI INI
         "nama": nama,
