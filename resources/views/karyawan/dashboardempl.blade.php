@@ -2,7 +2,7 @@
 
 @section('content')
 
-<main class="ml-45 mt-10 p-5">
+<main class="ml-45">
 
 <!-- HERO -->
 <div class="bg-red-800 text-white rounded-xl p-6 md:p-8 mb-8">
