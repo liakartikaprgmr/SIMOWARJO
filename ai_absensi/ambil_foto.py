@@ -29,7 +29,7 @@ while True:
         # BASE64
         with open('foto1.jpg', 'rb') as f:
             base64_img = base64.b64encode(f.read()).decode()
-            print("\n📋 COPY untuk REGISTER:")
+            print("\n COPY untuk REGISTER:")
             print('"image": "data:image/jpeg;base64,' + base64_img[:100] + '..."')
         
         # Foto kedua
