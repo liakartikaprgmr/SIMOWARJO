@@ -64,16 +64,15 @@ class AuthController extends Controller
         // CEK FOTO VALID
         $foto = $request->file('foto');
         if (!$foto || !$foto->isValid()) {
-            return back()->with('error', '❌ Foto tidak valid!');
+            return back()->with('error', 'Foto tidak valid!');
         }
 
         $image_info = getimagesize($foto->path());
         if (!$image_info) {
-            return back()->with('error', '❌ Harus file gambar JPG/PNG!');
+            return back()->with('error', 'Harus file gambar JPG/PNG!');
         }
 
         try {
-            // 1. SIMPAN KE DATABASE KARYAWAN
             $karyawan = KaryawanModel::create([
                 'nama' => $request->nama,
                 'email' => $request->email,
@@ -85,7 +84,6 @@ class AuthController extends Controller
                 'role' => 'karyawan',
             ]);
 
-            // 2.AUTO SAVE FOTO ke known_faces/ (1 BARIS!)
             $filename = $request->email . '.jpg';
             $knownFacesPath = base_path('ai_absensi/known_faces/' . $filename);
 
@@ -97,7 +95,6 @@ class AuthController extends Controller
             $karyawan->foto = "known_faces/{$filename}";
             $karyawan->save();
 
-            // 4. Trigger FastAPI reload
             Http::timeout(5)->post('http://127.0.0.1:8001/reload');
 
             Log::info('REGISTER SUCCESS', [
@@ -107,7 +104,7 @@ class AuthController extends Controller
             ]);
 
             return redirect('/login')
-                ->with('success', "🎉 Registrasi sukses {$request->nama}! Wajah tersimpan & siap absensi AI");
+                ->with('success', "Registrasi sukses {$request->nama}! Wajah tersimpan & siap absensi AI");
 
         } catch (\Exception $e) {
             Log::error('Register error: ' . $e->getMessage());
