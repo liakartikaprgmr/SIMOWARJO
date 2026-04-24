@@ -20,6 +20,8 @@ class KaryawanModel extends Authenticatable
         'tanggal_masuk',
         'foto',
         'role',
+        'nama_bank',
+        'no_rekening',
     ];
 
     protected $hidden = [
@@ -38,10 +40,10 @@ class KaryawanModel extends Authenticatable
 
     public function getUserById($id_karyawan)
     {
-    return $this->where('id_karyawan', $id_karyawan)->first(); // Mengambil satu data berdasarkan id_karyawan
+        return $this->where('id_karyawan', $id_karyawan)->first(); // Mengambil satu data berdasarkan id_karyawan
     }
 
-    public function updateUser ($id_karyawan, $data)
+    public function updateUser($id_karyawan, $data)
     {
         // Update data pengguna
         return $this->update($id_karyawan, $data);
@@ -50,6 +52,10 @@ class KaryawanModel extends Authenticatable
     public function delete_data($id_karyawan)
     {
         return self::where('id_karyawan', $id_karyawan)->delete();
+    }
+    public function komponenGaji()
+    {
+        return $this->hasOne(KomponenGajiModel::class, 'id_karyawan', 'id_karyawan');
     }
 
 }

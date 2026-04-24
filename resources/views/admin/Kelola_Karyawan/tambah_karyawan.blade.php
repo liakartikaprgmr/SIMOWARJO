@@ -62,6 +62,25 @@
                         </div>
 
                         <div class="mb-4">
+                            <label class="block text-sm font-medium text-gray-700 mb-2">Nama Bank</label>
+                            <select name="nama_bank" class="w-full px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-red-500">
+                                <option value="">-- Pilih Bank (Opsional) --</option>
+                                <option value="bca">BCA</option>
+                                <option value="mandiri">Mandiri</option>
+                                <option value="bni">BNI</option>
+                                <option value="bri">BRI</option>
+                                <option value="cimb">CIMB Niaga</option>
+                                <option value="gopay">GoPay</option>
+                                <option value="ovo">OVO</option>
+                            </select>
+                        </div>
+
+                        <div class="mb-4">
+                            <label class="block text-sm font-medium text-gray-700 mb-2">Nomor Rekening / E-Wallet</label>
+                            <input type="text" name="no_rekening" class="w-full px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-red-500">
+                        </div>
+
+                        <div class="mb-4">
                             <label class="block text-sm font-medium text-gray-700 mb-2">Status</label>
                             <select name="status" class="w-full px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-red-500">
                                 <option value="aktif">Aktif</option>

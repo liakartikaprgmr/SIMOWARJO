@@ -58,6 +58,25 @@
                         </div>
 
                         <div class="mb-4">
+                            <label class="block text-sm font-medium text-gray-700 mb-2">Nama Bank</label>
+                            <select name="nama_bank" class="w-full px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-red-500">
+                                <option value="">-- Pilih Bank (Opsional) --</option>
+                                <option value="bca" {{ $karyawan->nama_bank == 'bca' ? 'selected' : '' }}>BCA</option>
+                                <option value="mandiri" {{ $karyawan->nama_bank == 'mandiri' ? 'selected' : '' }}>Mandiri</option>
+                                <option value="bni" {{ $karyawan->nama_bank == 'bni' ? 'selected' : '' }}>BNI</option>
+                                <option value="bri" {{ $karyawan->nama_bank == 'bri' ? 'selected' : '' }}>BRI</option>
+                                <option value="cimb" {{ $karyawan->nama_bank == 'cimb' ? 'selected' : '' }}>CIMB Niaga</option>
+                                <option value="gopay" {{ $karyawan->nama_bank == 'gopay' ? 'selected' : '' }}>GoPay</option>
+                                <option value="ovo" {{ $karyawan->nama_bank == 'ovo' ? 'selected' : '' }}>OVO</option>
+                            </select>
+                        </div>
+
+                        <div class="mb-4">
+                            <label class="block text-sm font-medium text-gray-700 mb-2">Nomor Rekening / E-Wallet</label>
+                            <input type="text" name="no_rekening" value="{{ $karyawan->no_rekening }}" class="w-full px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-red-500">
+                        </div>
+
+                        <div class="mb-4">
                             <label class="block text-sm font-medium text-gray-700 mb-2">Status</label>
                             <select name="status" class="w-full px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-red-500">
                                 <option value="aktif" {{ $karyawan->status == 'aktif' ? 'selected' : '' }}>Aktif</option>

@@ -27,6 +27,8 @@ class KaryawanController extends Controller
         $karyawan->jabatan = $request->jabatan;
         $karyawan->status = $request->status;
         $karyawan->role = $request->role ?? 'karyawan';
+        $karyawan->nama_bank = $request->nama_bank;
+        $karyawan->no_rekening = $request->no_rekening;
         $karyawan->tanggal_masuk = date('Y-m-d'); // Default ke hari ini saat pembuatan baru
         
         $knownFacesPath = null;
@@ -78,6 +80,8 @@ class KaryawanController extends Controller
         if ($request->has('role')) {
             $karyawan->role = $request->role;
         }
+        $karyawan->nama_bank = $request->nama_bank;
+        $karyawan->no_rekening = $request->no_rekening;
 
         $knownFacesPath = null;
         if ($request->hasFile('foto')) {
