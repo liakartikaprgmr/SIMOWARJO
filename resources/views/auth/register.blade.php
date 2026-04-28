@@ -65,7 +65,7 @@
             </div>
            <!-- FOTO FIX -->
             <div class="mb-6">
-                <label class="block text-sm font-semibold mb-1 text-red-600">📸 Foto Wajah (WAJIB)</label>
+                <label class="block text-sm font-semibold mb-1 text-red-600">Foto Wajah</label>
                 <input type="file" name="foto" accept="image/*" required
                     class="w-full px-3 py-2 border-2 border-dashed border-red-300 rounded-lg bg-red-50">
                 <p class="text-xs text-gray-500 mt-1">JPG/PNG < 2MB</p>

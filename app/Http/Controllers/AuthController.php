@@ -25,11 +25,29 @@ class AuthController extends Controller
 
         if (Auth::attempt($credentials)) {
             $request->session()->regenerate();
+            
+            if (Auth::user()->role === 'supervisor') {
+                return redirect()->intended('/admin/dashboard');
+            }
+
+            if (Auth::user()->role === 'leader_shift') {
+                return redirect()->intended('/admin/dashboard');
+            }
+
             return redirect()->intended('/karyawan/dashboard');
         }
         return back()->withErrors([
             'email' => 'Email atau password salah.',
         ]);
+    }
+
+    public function logout(Request $request)
+    {
+        Auth::logout();
+        $request->session()->invalidate();
+        $request->session()->regenerateToken();
+        
+        return redirect('/');
     }
 
 
@@ -80,7 +98,7 @@ class AuthController extends Controller
                 'no_hp' => $request->no_hp ?? null,
                 'jabatan' => $request->jabatan ?? 'Staff',
                 'tanggal_masuk' => now(),
-                'foto' => 'default.jpg',  // sementara
+                'foto' => 'default.jpg',
                 'role' => 'karyawan',
             ]);
 

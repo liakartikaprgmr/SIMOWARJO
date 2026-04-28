@@ -25,26 +25,26 @@ Lihat Laporan
 
 <!-- TOTAL KARYAWAN -->
 <div class="bg-sky-400 p-6 rounded-xl shadow">
-<h3 class="text-black text-sm">Total Karyawan</h3>
-<p class="text-2xl font-bold mt-2">45</p>
+<h3 class="text-black text-sm font-semibold">Total Karyawan</h3>
+<p class="text-2xl font-bold mt-2">{{ $totalKaryawan }}</p>
 </div>
 
 <!-- KEHADIRAN -->
 <div class="bg-green-500 p-6 rounded-xl shadow">
-<h3 class="text-black text-sm">Kehadiran Hari Ini</h3>
-<p class="text-2xl font-bold mt-2">38</p>
+<h3 class="text-black text-sm font-semibold">Kehadiran Hari Ini</h3>
+<p class="text-2xl font-bold mt-2">{{ $kehadiranHariIni }}</p>
 </div>
 
 <!-- PENGGAJIAN -->
 <div class="bg-yellow-400 p-6 rounded-xl shadow">
-<h3 class="text-black text-sm">Penggajian Bulan Ini</h3>
-<p class="text-2xl font-bold mt-2">Rp120JT</p>
+<h3 class="text-black text-sm font-semibold">Penggajian Bulan Ini</h3>
+<p class="text-2xl font-bold mt-2">Rp{{ number_format($penggajianBulanIni, 0, ',', '.') }}</p>
 </div>
 
-<!-- STOK -->
-<div class="bg-orange-500 p-6 rounded-xl shadow">
-<h3 class="text-black text-sm">Stok Barang</h3>
-<p class="text-2xl font-bold mt-2">124</p>
+<!-- PERIZINAN -->
+<div class="bg-orange-500 p-6 rounded-xl shadow text-white">
+<h3 class="text-white text-sm font-semibold">Perizinan Menunggu</h3>
+<p class="text-2xl font-bold mt-2">{{ $perizinanPending }}</p>
 </div>
 
 </div>
@@ -66,7 +66,7 @@ Lihat Laporan
 <!-- PIE CHART -->
 <div class="bg-white p-6 rounded-xl shadow ">
     <h2 class="text-lg font-semibold mb-4">
-    Distribusi Stok Barang
+    Distribusi Status Karyawan
     </h2>
     <canvas id="stockChart"></canvas>
 </div>
@@ -88,10 +88,10 @@ const attendanceCtx = document.getElementById('attendanceChart');
 new Chart(attendanceCtx, {
 type: 'bar',
 data: {
-labels: ['Senin','Selasa','Rabu','Kamis','Jumat','Sabtu'],
+labels: {!! json_encode($chartLabels) !!},
 datasets: [{
 label: 'Jumlah Kehadiran',
-data: [40,42,38,41,39,35],
+data: {!! json_encode($chartData) !!},
 backgroundColor: '#3b82f6'
 }]
 },
@@ -108,19 +108,17 @@ display: false
 
 
 
-// PIE CHART STOK
+// PIE CHART KARYAWAN
 const stockCtx = document.getElementById('stockChart');
 
 new Chart(stockCtx, {
 type: 'pie',
 data: {
-labels: ['Bahan Makanan','Minuman','Peralatan','Lainnya'],
+labels: ['Aktif', 'Tidak Aktif'],
 datasets: [{
-data: [40,25,20,15],
+data: [{{ $karyawanAktif }}, {{ $karyawanTidakAktif }}],
 backgroundColor: [
 '#22c55e',
-'#3b82f6',
-'#f59e0b',
 '#ef4444'
 ]
 }]
