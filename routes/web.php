@@ -53,15 +53,33 @@ Route::post('/presensi/upload', [PresensiController::class, 'upload'])->name('pr
 
 use App\Http\Controllers\PenggajianController;
 
-// Rute Tambahan untuk Admin (Persetujuan Izin & Penggajian)
+use App\Http\Controllers\PenjadwalanController;
+
+// Rute Admin (Persetujuan Izin & Penggajian)
 Route::prefix('admin')->name('admin.')->group(function () {
-    // Perizinan (Menu Mandiri)
+    // Penjadwalan
+    Route::get('/penjadwalan', [PenjadwalanController::class, 'indexAdmin'])->name('penjadwalan.index');
+    Route::get('/penjadwalan/create', [PenjadwalanController::class, 'create'])->name('penjadwalan.create');
+    Route::post('/penjadwalan/store', [PenjadwalanController::class, 'store'])->name('penjadwalan.store');
+    Route::get('/penjadwalan/edit-bulk', [PenjadwalanController::class, 'editBulk'])->name('penjadwalan.edit_bulk');
+    Route::post('/penjadwalan/update-bulk', [PenjadwalanController::class, 'updateBulk'])->name('penjadwalan.update_bulk');
+    Route::post('/penjadwalan/delete-bulk', [PenjadwalanController::class, 'deleteBulk'])->name('penjadwalan.delete_bulk');
+    
+    // Legacy routes (optional)
+    Route::get('/penjadwalan/edit/{id}', [PenjadwalanController::class, 'edit'])->name('penjadwalan.edit');
+    Route::post('/penjadwalan/update/{id}', [PenjadwalanController::class, 'update'])->name('penjadwalan.update');
+    Route::delete('/penjadwalan/delete/{id}', [PenjadwalanController::class, 'delete'])->name('penjadwalan.delete');
+
+    // Perizinan
     Route::get('/perizinan/persetujuan', [\App\Http\Controllers\PerizinanController::class, 'index'])->name('perizinan.index');
     Route::post('/perizinan/persetujuan/{id}', [\App\Http\Controllers\PerizinanController::class, 'updateStatus'])->name('perizinan.update_status');
 
     // Geolokasi
     Route::get('/geolokasi', [\App\Http\Controllers\GeolokasiController::class, 'index'])->name('geolokasi.index');
     Route::post('/geolokasi', [\App\Http\Controllers\GeolokasiController::class, 'update'])->name('geolokasi.update');
+
+    // Presensi Wajah (Supervisor)
+    Route::get('/presensi-wajah', [PresensiController::class, 'adminPresensi'])->name('presensi_wajah');
 
     // Komponen Gaji
     Route::get('/penggajian/komponen-gaji', [\App\Http\Controllers\KomponenGajiController::class, 'index'])->name('penggajian.komponen_gaji.index');
@@ -79,10 +97,15 @@ Route::prefix('admin')->name('admin.')->group(function () {
 
 // Rute Tambahan untuk Karyawan (Pengajuan Izin)
 Route::prefix('karyawan')->name('karyawan.')->group(function () {
-    Route::get('/izin', [PresensiController::class, 'createIzin'])->name('izin');
-    Route::post('/izin', [PresensiController::class, 'storeIzin'])->name('izin.store');
-    
-    Route::get('/sick-leave', [PresensiController::class, 'createSakit'])->name('sick_leave');
+    Route::get('/jadwal-kerja', [PenjadwalanController::class, 'indexKaryawan'])->name('jadwal_kerja');
+
+    Route::get('/izin', [\App\Http\Controllers\PerizinanController::class, 'createIzin'])->name('izin');
+    Route::post('/izin', [\App\Http\Controllers\PerizinanController::class, 'storeIzin'])->name('izin.store');
+
+    Route::get('/sick-leave', [\App\Http\Controllers\PerizinanController::class, 'createSakit'])->name('sick_leave');
+
+    Route::get('/slip-gaji', [\App\Http\Controllers\PenggajianController::class, 'karyawanSlipGaji'])->name('slip_gaji');
+    Route::get('/slip-gaji/cetak/{id}', [\App\Http\Controllers\PenggajianController::class, 'cetakSlipKaryawan'])->name('cetak_slip');
 });
 
 use App\Http\Controllers\MidtransWebhookController;
