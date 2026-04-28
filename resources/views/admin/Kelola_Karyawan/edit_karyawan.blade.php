@@ -15,13 +15,21 @@
                     <!-- Foto -->
                     <div>
                         <label class="block text-sm font-medium text-gray-700 mb-2">Foto</label>
-                        <div class="border-2 border-dashed border-gray-300 rounded-lg p-6 text-center hover:border-red-500 transition">
-                            <input type="file" name="foto" accept="image/*" class="hidden" id="fotoInput">
-                            <label for="fotoInput" class="cursor-pointer">
-                                <svg class="w-12 h-12 text-gray-400 mx-auto mb-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M7 16a4 4 0 01-.88-7.903A5 5 0 1115.9 6L16 6a5 5 0 011 9.9M15 13l-3-3m0 0l-3 3m3-3v12"/>
-                                </svg>
-                                <p class="text-sm text-gray-500">Klik untuk upload foto</p>
+                        <div class="border-2 border-dashed border-gray-300 rounded-lg p-6 text-center hover:border-red-500 transition relative">
+                            <input type="file" name="foto" accept="image/*" class="hidden" id="fotoInput" onchange="previewImage(event)">
+                            <label for="fotoInput" class="cursor-pointer block w-full h-full">
+                                @if($karyawan->foto)
+                                    <img id="imagePreview" src="{{ asset($karyawan->foto) }}?v={{ $karyawan->updated_at->timestamp }}" class="mx-auto max-h-32 rounded-lg object-cover mb-2" alt="Preview Foto">
+                                @else
+                                    <img id="imagePreview" src="" class="mx-auto max-h-32 rounded-lg object-cover mb-2 hidden" alt="Preview Foto">
+                                @endif
+                                <div id="uploadIcon" class="{{ $karyawan->foto ? 'hidden' : '' }}">
+                                    <svg class="w-12 h-12 text-gray-400 mx-auto mb-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M7 16a4 4 0 01-.88-7.903A5 5 0 1115.9 6L16 6a5 5 0 011 9.9M15 13l-3-3m0 0l-3 3m3-3v12"/>
+                                    </svg>
+                                    <p class="text-sm text-gray-500">Klik untuk upload foto</p>
+                                </div>
+                                <p id="uploadTextChange" class="text-xs text-red-500 mt-2 {{ $karyawan->foto ? '' : 'hidden' }}">Klik gambar untuk mengganti foto</p>
                             </label>
                         </div>
                     </div>
@@ -95,5 +103,28 @@
     </div>  
 
 </main>
+
+<script>
+    function previewImage(event) {
+        const input = event.target;
+        if (input.files && input.files[0]) {
+            const reader = new FileReader();
+            
+            reader.onload = function(e) {
+                const imagePreview = document.getElementById('imagePreview');
+                const uploadIcon = document.getElementById('uploadIcon');
+                const uploadTextChange = document.getElementById('uploadTextChange');
+                
+                imagePreview.src = e.target.result;
+                imagePreview.classList.remove('hidden');
+                
+                if(uploadIcon) uploadIcon.classList.add('hidden');
+                if(uploadTextChange) uploadTextChange.classList.remove('hidden');
+            }
+            
+            reader.readAsDataURL(input.files[0]);
+        }
+    }
+</script>
 
 @endsection

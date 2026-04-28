@@ -58,4 +58,9 @@ class KaryawanModel extends Authenticatable
         return $this->hasOne(KomponenGajiModel::class, 'id_karyawan', 'id_karyawan');
     }
 
+    public function penjadwalan()
+    {
+        return $this->hasMany(PenjadwalanModel::class, 'id_karyawan', 'id_karyawan');
+    }
+
 }
