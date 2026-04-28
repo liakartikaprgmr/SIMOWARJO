@@ -35,6 +35,29 @@ class PresensiController extends Controller
         return view('karyawan.presensi', compact('riwayat', 'formattedEmail'));
     }
 
+    public function adminPresensi()
+    {
+        $userId = Auth::id();
+        $userEmail = Auth::user()->email;
+
+        $formattedEmail = strtolower(str_replace(' ', '.', $userEmail)); 
+        
+        $riwayat = PresensiModel::selectRaw('
+            DATE(created_at) as tanggal,
+            MIN(CASE WHEN type="masuk" THEN created_at END) as jam_masuk,
+            MAX(CASE WHEN type="pulang" THEN created_at END) as jam_pulang,
+            MAX(CASE WHEN type="masuk" THEN foto_absensi END) as foto_masuk,
+            MAX(CASE WHEN type="pulang" THEN foto_absensi END) as foto_pulang
+        ')
+        ->where('id_karyawan', Auth::id())
+        ->groupBy('tanggal')
+        ->orderBy('tanggal', 'desc')
+        ->limit(10)
+        ->get();
+
+        return view('admin.presensi.presensi_wajah', compact('riwayat', 'formattedEmail'));
+    }
+
    public function upload(Request $request)
 {
     Log::error('MASUK CONTROLLER UPLOAD');

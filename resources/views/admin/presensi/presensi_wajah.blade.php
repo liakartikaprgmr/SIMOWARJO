@@ -1,13 +1,8 @@
-<!DOCTYPE html>
-<html lang="en">
+@extends('admin.layout')
 
-<head>
-    <meta charset="UTF-8">
+@section('content')
     <meta name="csrf-token" content="{{ csrf_token() }}">
     <meta name="user-email" content="{{ $formattedEmail }}">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Absensi Wajah AI</title>
-    <script src="https://cdn.tailwindcss.com"></script>
 
     <!-- Leaflet CSS -->
     <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css"
@@ -44,14 +39,8 @@
             font-size: 14px;
         }
     </style>
-</head>
 
-<body class="bg-gray-100">
-    <!-- Sidebar -->
-    @include('karyawan.sidebarempl')
-
-    <!-- Content -->
-    <div class="ml-64 p-6">
+    <div class="mt-16">
         <!-- Header -->
         <div class="flex justify-between items-center mb-6">
             <div>
@@ -72,8 +61,7 @@
                 </p>
             </div>
             <div class="flex gap-2">
-                <span id="gpsBadge"
-                    class="bg-yellow-100 text-yellow-800 px-3 py-1 rounded-full text-sm animate-pulse">GPS
+                <span id="gpsBadge" class="bg-yellow-100 text-yellow-800 px-3 py-1 rounded-full text-sm animate-pulse">GPS
                     Loading...</span>
                 <span class="bg-blue-100 text-blue-600 px-3 py-2 rounded-full text-sm">AI Active</span>
             </div>
@@ -104,7 +92,7 @@
                     </a>
                 </div>
 
-                <!-- MAP GPS STATUS-->
+                <!-- MAP GPS STATUS (CLEAN VERSION - TANPA TEXT INFO) -->
                 <button onclick="toggleMap()"
                     class="flex items-center gap-1 mb-4 bg-gradient-to-r from-green-500 to-green-600 text-white px-4 py-1 rounded-lg shadow hover:bg-blue-700 transition">
                     <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24">
@@ -168,18 +156,15 @@
                                     {{ \Carbon\Carbon::parse($item->tanggal)->translatedFormat('d F Y') }}
                                 </p>
                                 @if($item->jam_masuk && $item->jam_pulang)
-                                    <span
-                                        class="px-3 py-1 bg-green-100 text-center text-green-800 text-xs font-bold rounded-full">
+                                    <span class="px-3 py-1 bg-green-100 text-center text-green-800 text-xs font-bold rounded-full">
                                         Hadir
                                     </span>
                                 @elseif($item->jam_masuk)
-                                    <span
-                                        class="px-3 py-1 bg-yellow-100 text-centertext-yellow-800 text-xs font-bold rounded-full">
+                                    <span class="px-3 py-1 bg-yellow-100 text-centertext-yellow-800 text-xs font-bold rounded-full">
                                         Belum Pulang
                                     </span>
                                 @else
-                                    <span
-                                        class="px-3 py-1 bg-gray-100 text-center text-gray-800 text-xs font-bold rounded-full">
+                                    <span class="px-3 py-1 bg-gray-100 text-center text-gray-800 text-xs font-bold rounded-full">
                                         Tidak Hadir
                                     </span>
                                 @endif
@@ -338,12 +323,12 @@
             })
                 .addTo(map)
                 .bindPopup(`
-            <div class="p-3">
-                <h3 class="font-bold text-lg text-blue-600 mb-2">KANTOR PUSAT</h3>
-                <p class="text-sm text-gray-700 mb-1"><strong>Koordinat:</strong> ${KANTOR.lat.toFixed(5)}, ${KANTOR.lng.toFixed(5)}</p>
-                <p class="text-sm font-bold text-green-600">Radius: <span class="text-xl ">${RADIUS_KANTOR}m</span></p>
-            </div>
-        `);
+                    <div class="p-3">
+                        <h3 class="font-bold text-lg text-blue-600 mb-2">KANTOR PUSAT</h3>
+                        <p class="text-sm text-gray-700 mb-1"><strong>Koordinat:</strong> ${KANTOR.lat.toFixed(5)}, ${KANTOR.lng.toFixed(5)}</p>
+                        <p class="text-sm font-bold text-green-600">Radius: <span class="text-xl ">${RADIUS_KANTOR}m</span></p>
+                    </div>
+                `);
 
             // KANTOR CIRCLE
             kantorCircle = L.circle([KANTOR.lat, KANTOR.lng], {
@@ -377,35 +362,35 @@
             })
                 .addTo(map)
                 .bindPopup(`
-            <div class="p-4 max-w-xs">
-                <h3 class="font-bold text-lg mb-3 flex items-center justify-between">
-                    <span>POSISI ANDA</span>
-                    <span class="px-2 py-1 rounded-full text-xs font-bold ${statusColor}">
-                        ${status}
-                    </span>
-                </h3>
-                <div class="space-y-3 text-sm">
-                    <div class="flex justify-between">
-                        <span class="font-semibold text-gray-600">Koordinat</span>
-                        <span class="font-mono text-gray-800">
-                            ${currentGPS.lat.toFixed(5)}, ${currentGPS.lng.toFixed(5)}
-                        </span>
+                    <div class="p-4 max-w-xs">
+                        <h3 class="font-bold text-lg mb-3 flex items-center justify-between">
+                            <span>POSISI ANDA</span>
+                            <span class="px-2 py-1 rounded-full text-xs font-bold ${statusColor}">
+                                ${status}
+                            </span>
+                        </h3>
+                        <div class="space-y-3 text-sm">
+                            <div class="flex justify-between">
+                                <span class="font-semibold text-gray-600">Koordinat</span>
+                                <span class="font-mono text-gray-800">
+                                    ${currentGPS.lat.toFixed(5)}, ${currentGPS.lng.toFixed(5)}
+                                </span>
+                            </div>
+                            <div class="flex justify-between items-center">
+                                <span class="font-semibold text-gray-600">Jarak Kantor</span>
+                                <span class="font-bold text-lg ${statusColor}">
+                                    ${Math.round(currentGPS.jarak)}m
+                                </span>
+                            </div>
+                            <div class="flex justify-between">
+                                <span class="font-semibold text-gray-600">Akurasi</span>
+                                <span class="text-gray-800">
+                                    ${Math.round(currentGPS.acc)}m
+                                </span>
+                            </div>
+                        </div>
                     </div>
-                    <div class="flex justify-between items-center">
-                        <span class="font-semibold text-gray-600">Jarak Kantor</span>
-                        <span class="font-bold text-lg ${statusColor}">
-                            ${Math.round(currentGPS.jarak)}m
-                        </span>
-                    </div>
-                    <div class="flex justify-between">
-                        <span class="font-semibold text-gray-600">Akurasi</span>
-                        <span class="text-gray-800">
-                            ${Math.round(currentGPS.acc)}m
-                        </span>
-                    </div>
-                </div>
-            </div>
-        `);
+                `);
 
             map.fitBounds([
                 [KANTOR.lat, KANTOR.lng],
@@ -680,7 +665,5 @@
             }
         }
     </script>
-
-</body>
-
-</html>
+    </script>
+@endsection
