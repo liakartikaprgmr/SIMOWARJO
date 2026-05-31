@@ -32,7 +32,8 @@ class PresensiController extends Controller
         ->limit(10)
         ->get();
 
-        return view('karyawan.presensi', compact('riwayat', 'formattedEmail'));
+        $geolokasi = \App\Models\GeolokasiModel::first();
+        return view('karyawan.presensi', compact('riwayat', 'formattedEmail', 'geolokasi'));
     }
 
     public function adminPresensi()
@@ -55,7 +56,8 @@ class PresensiController extends Controller
         ->limit(10)
         ->get();
 
-        return view('admin.presensi.presensi_wajah', compact('riwayat', 'formattedEmail'));
+        $geolokasi = \App\Models\GeolokasiModel::first();
+        return view('admin.presensi.presensi_wajah', compact('riwayat', 'formattedEmail', 'geolokasi'));
     }
 
     public function upload(Request $request)
@@ -104,9 +106,10 @@ class PresensiController extends Controller
         }
 
         // 3. GPS CHECK
-        $kantorLat = -6.4915853;
-        $kantorLng = 107.8846398;
-        $radiusMax = 150;
+        $geolokasi = \App\Models\GeolokasiModel::first();
+        $kantorLat = $geolokasi ? $geolokasi->latitude : -6.4915853;
+        $kantorLng = $geolokasi ? $geolokasi->longitude : 107.8846398;
+        $radiusMax = $geolokasi ? $geolokasi->radius : 150;
         $distance = $this->hitungJarak($request->lat, $request->lng, $kantorLat, $kantorLng);
 
         Log::info("GPS Distance: " . round($distance) . "m");
@@ -203,5 +206,89 @@ class PresensiController extends Controller
             sin($dLon / 2) * sin($dLon / 2);
         $c = 2 * asin(sqrt($a));
         return $earthRadius * $c;
+    }
+
+    public function daftarKehadiran(Request $request)
+    {
+        $startDate = $request->input('tanggal_mulai', date('Y-m-d'));
+        $endDate = $request->input('tanggal_akhir', date('Y-m-d'));
+        $search = $request->input('search');
+
+        $totalKaryawan = \App\Models\KaryawanModel::count();
+
+        $query = PresensiModel::selectRaw('
+                id_karyawan,
+                DATE(created_at) as tanggal,
+                MIN(CASE WHEN type="masuk" THEN created_at END) as jam_masuk,
+                MAX(CASE WHEN type="pulang" THEN created_at END) as jam_pulang,
+                MAX(CASE WHEN type="masuk" THEN foto_absensi END) as foto_masuk,
+                MAX(CASE WHEN type="pulang" THEN foto_absensi END) as foto_pulang
+            ')
+            ->whereDate('created_at', '>=', $startDate)
+            ->whereDate('created_at', '<=', $endDate)
+            ->groupBy('id_karyawan', 'tanggal')
+            ->with('karyawan');
+
+        if ($search) {
+            $query->whereHas('karyawan', function($q) use ($search) {
+                $q->where('nama', 'like', "%{$search}%");
+            });
+        }
+
+        $kehadiran = $query->orderBy('tanggal', 'desc')->paginate(20)->withQueryString();
+
+        // Hitung Statistik
+        $hadir = PresensiModel::where('type', 'masuk')
+            ->whereDate('created_at', '>=', $startDate)
+            ->whereDate('created_at', '<=', $endDate)
+            ->count();
+
+        $sakit = \App\Models\PengajuanIzinModel::where('jenis', 'sakit')
+            ->where('status', 'disetujui')
+            ->where(function($q) use ($startDate, $endDate) {
+                $q->whereBetween('tanggal_mulai', [$startDate, $endDate])
+                  ->orWhereBetween('tanggal_selesai', [$startDate, $endDate])
+                  ->orWhere(function($q2) use ($startDate, $endDate) {
+                      $q2->where('tanggal_mulai', '<=', $startDate)
+                         ->where('tanggal_selesai', '>=', $endDate);
+                  });
+            })->count();
+
+        $izin = \App\Models\PengajuanIzinModel::where('jenis', 'izin')
+            ->where('status', 'disetujui')
+            ->where(function($q) use ($startDate, $endDate) {
+                $q->whereBetween('tanggal_mulai', [$startDate, $endDate])
+                  ->orWhereBetween('tanggal_selesai', [$startDate, $endDate])
+                  ->orWhere(function($q2) use ($startDate, $endDate) {
+                      $q2->where('tanggal_mulai', '<=', $startDate)
+                         ->where('tanggal_selesai', '>=', $endDate);
+                  });
+            })->count();
+
+        $telat = 0;
+        $presensiMasuk = PresensiModel::where('type', 'masuk')
+            ->whereDate('created_at', '>=', $startDate)
+            ->whereDate('created_at', '<=', $endDate)
+            ->get();
+        
+        foreach ($presensiMasuk as $p) {
+            $jadwal = \App\Models\PenjadwalanModel::where('id_karyawan', $p->id_karyawan)
+                ->where('tanggal', date('Y-m-d', strtotime($p->created_at)))
+                ->first();
+            if ($jadwal && $jadwal->jam_masuk) {
+                $waktuMasuk = date('H:i:s', strtotime($p->created_at));
+                if ($waktuMasuk > $jadwal->jam_masuk) {
+                    $telat++;
+                }
+            }
+        }
+
+        $days = max(1, round((strtotime($endDate) - strtotime($startDate)) / (60 * 60 * 24)) + 1);
+        $tidakHadir = max(0, ($totalKaryawan * $days) - ($hadir + $sakit + $izin));
+
+        return view('admin.presensi.kehadiran', compact(
+            'kehadiran', 'startDate', 'endDate', 'search',
+            'hadir', 'sakit', 'izin', 'telat', 'tidakHadir'
+        ));
     }
 }

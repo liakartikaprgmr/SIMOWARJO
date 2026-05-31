@@ -6,10 +6,24 @@
     <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"
         integrity="sha256-20nQCchB9co0qIjJZRGuk2/Z9VM+kNiyxNV1lvTlZBo=" crossorigin=""></script>
 
-    <div class="px-6 py-8">
+    <div class="mt-10 p-6">
         <div class="max-w-6xl mx-auto">
-            <h1 class="text-3xl font-bold text-gray-800 mb-2">Kelola Geolokasi Kantor</h1>
-            <p class="text-gray-500 mb-6">Tentukan titik pusat dan radius jangkauan absensi karyawan.</p>
+            <div class="bg-red-800 text-white rounded-xl p-6 mb-6 shadow-md flex items-center justify-between">
+                <div>
+                    <h1 class="text-2xl font-bold">Kelola Geolokasi Kantor</h1>
+                    <p class="text-red-200 text-sm mt-1">Tentukan titik pusat dan radius jangkauan absensi karyawan pada
+                        peta.</p>
+                </div>
+                <div class="hidden md:block">
+                    <svg xmlns="http://www.w3.org/2000/svg" class="h-12 w-12 text-red-300 opacity-75" fill="none"
+                        viewBox="0 0 24 24" stroke="currentColor">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                            d="M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0z" />
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                            d="M15 11a3 3 0 11-6 0 3 3 0 016 0z" />
+                    </svg>
+                </div>
+            </div>
 
             @if(session('success'))
                 <div class="bg-green-100 border border-green-400 text-green-700 px-4 py-3 rounded relative mb-6">

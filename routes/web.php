@@ -8,6 +8,11 @@ use App\Http\Controllers\DasboardAdminController;
 use App\Http\Controllers\DashboardKaryawanController;
 use App\Http\Controllers\PresensiController;
 use App\Http\Controllers\KaryawanController;
+use App\Http\Controllers\StokController;
+use App\Http\Controllers\BarangMasukController;
+use App\Http\Controllers\BarangKeluarController;
+use App\Http\Controllers\LaporanStokController;
+
 
 
 Route::get('/', function () {
@@ -64,7 +69,7 @@ Route::prefix('admin')->name('admin.')->group(function () {
     Route::get('/penjadwalan/edit-bulk', [PenjadwalanController::class, 'editBulk'])->name('penjadwalan.edit_bulk');
     Route::post('/penjadwalan/update-bulk', [PenjadwalanController::class, 'updateBulk'])->name('penjadwalan.update_bulk');
     Route::post('/penjadwalan/delete-bulk', [PenjadwalanController::class, 'deleteBulk'])->name('penjadwalan.delete_bulk');
-    
+
     // Legacy routes (optional)
     Route::get('/penjadwalan/edit/{id}', [PenjadwalanController::class, 'edit'])->name('penjadwalan.edit');
     Route::post('/penjadwalan/update/{id}', [PenjadwalanController::class, 'update'])->name('penjadwalan.update');
@@ -78,8 +83,9 @@ Route::prefix('admin')->name('admin.')->group(function () {
     Route::get('/geolokasi', [\App\Http\Controllers\GeolokasiController::class, 'index'])->name('geolokasi.index');
     Route::post('/geolokasi', [\App\Http\Controllers\GeolokasiController::class, 'update'])->name('geolokasi.update');
 
-    // Presensi Wajah (Supervisor)
+    // Presensi Wajah & Kehadiran (Supervisor)
     Route::get('/presensi-wajah', [PresensiController::class, 'adminPresensi'])->name('presensi_wajah');
+    Route::get('/presensi/kehadiran', [PresensiController::class, 'daftarKehadiran'])->name('presensi.kehadiran');
 
     // Komponen Gaji
     Route::get('/penggajian/komponen-gaji', [\App\Http\Controllers\KomponenGajiController::class, 'index'])->name('penggajian.komponen_gaji.index');
@@ -106,6 +112,51 @@ Route::prefix('karyawan')->name('karyawan.')->group(function () {
 
     Route::get('/slip-gaji', [\App\Http\Controllers\PenggajianController::class, 'karyawanSlipGaji'])->name('slip_gaji');
     Route::get('/slip-gaji/cetak/{id}', [\App\Http\Controllers\PenggajianController::class, 'cetakSlipKaryawan'])->name('cetak_slip');
+});
+
+// Stok Barang (supervisor & leader_shift)
+Route::prefix('admin/kelola_barang')->name('admin.kelola_barang.')->middleware('role:supervisor,leader_shift')->group(function () {
+    Route::get('/', [StokController::class, 'index'])->name('index');
+    Route::get('/tambah', [StokController::class, 'create'])->name('create');
+    Route::post('/tambah', [StokController::class, 'store'])->name('store');
+    Route::get('/{barang}/edit', [StokController::class, 'edit'])->name('edit');
+    Route::put('/{barang}', [StokController::class, 'update'])->name('update');
+    Route::delete('/{barang}', [StokController::class, 'destroy'])->name('destroy');
+
+    Route::get('/masuk', [BarangMasukController::class, 'index'])->name('masuk');
+    Route::post('/masuk', [BarangMasukController::class, 'store'])->name('masuk.store');
+    Route::delete('/masuk/{barangMasuk}', [BarangMasukController::class, 'destroy'])->name('masuk.destroy');
+
+    Route::get('/keluar', [BarangKeluarController::class, 'index'])->name('keluar');
+    Route::post('/keluar', [BarangKeluarController::class, 'store'])->name('keluar.store');
+    Route::delete('/keluar/{barangKeluar}', [BarangKeluarController::class, 'destroy'])->name('keluar.destroy');
+
+    Route::get('/laporan', [LaporanStokController::class, 'index'])->name('laporan');
+    Route::get('/laporan/pdf', [LaporanStokController::class, 'exportPdf'])->name('laporan.pdf');
+    Route::get('/laporan/excel', [LaporanStokController::class, 'exportExcel'])->name('laporan.excel');
+});
+
+use App\Http\Controllers\KeuanganController;
+
+// Kelola Keuangan
+Route::prefix('admin/kelola_keuangan')->name('admin.kelola_keuangan.')->middleware('role:supervisor,leader_shift,admin')->group(function () {
+    Route::get('/dashboard', [KeuanganController::class, 'dashboard'])->name('dashboard');
+
+    // Sales Harian / Pendapatan
+    Route::get('/sales', [KeuanganController::class, 'penjualanIndex'])->name('sales.index');
+    Route::get('/sales/create', [KeuanganController::class, 'salesCreate'])->name('sales.create');
+    Route::post('/sales', [KeuanganController::class, 'salesStore'])->name('sales.store');
+    Route::get('/sales/{sales}', [KeuanganController::class, 'salesShow'])->name('sales.show');
+    Route::delete('/sales/{sales}', [KeuanganController::class, 'salesDestroy'])->name('sales.destroy');
+
+    // Cashflow
+    Route::get('/cashflow', [KeuanganController::class, 'cashflowIndex'])->name('cashflow.index');
+    Route::post('/cashflow', [KeuanganController::class, 'cashflowStore'])->name('cashflow.store');
+
+    // Laporan Kas
+    Route::get('/laporan', [KeuanganController::class, 'laporanIndex'])->name('laporan');
+    Route::get('/laporan/pdf', [KeuanganController::class, 'laporanExportPdf'])->name('laporan.pdf');
+    Route::get('/laporan/excel', [KeuanganController::class, 'laporanExportExcel'])->name('laporan.excel');
 });
 
 use App\Http\Controllers\MidtransWebhookController;

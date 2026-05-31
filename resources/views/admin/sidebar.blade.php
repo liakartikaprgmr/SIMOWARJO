@@ -10,7 +10,7 @@
 
 <body class="bg-gray-100">
     <!-- NAVBAR -->
-    <header class="fixed top-0 left-0 right-0 h-16 bg-white shadow flex items-center justify-between px-6">
+    <header class="fixed top-0 left-0 right-0 h-16 bg-white shadow flex items-center justify-between px-6 z-50">
         <!-- LOGO -->
         <div class="flex items-center gap-3">
             <!-- HAMBURGER (mobile) -->
@@ -64,7 +64,7 @@
 
     <!-- SIDEBAR -->
     <aside id="sidebar"
-        class="fixed top-16 left-0 w-64 h-screen bg-red-800 text-white pt-6 pb-20 overflow-y-auto transform -translate-x-full md:translate-x-0 transition-transform duration-300">
+        class="fixed top-16 left-0 w-64 h-screen bg-red-800 text-white pt-6 pb-20 overflow-y-auto transform -translate-x-full md:translate-x-0 transition-transform duration-300 z-40">
         <nav class="px-4 space-y-6">
             <!-- UTAMA -->
             <div>
@@ -77,18 +77,19 @@
                     Dashboard
                 </a>
                 @if(auth()->check() && (auth()->user()->role == 'supervisor' || auth()->user()->role == 'admin'))
-                <a href="{{ route('admin.presensi_wajah') }}" class="flex items-center gap-2 p-2 rounded-lg hover:bg-red-700 mt-2">
-                    <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24">
-                        <circle cx="12" cy="12" r="3.2" fill="currentColor" />
-                        <path fill="currentColor"
-                            d="M9 2L7.17 4H4c-1.1 0-2 .9-2 2v12c0 1.1.9 2 2 2h16c1.1 0 2-.9 2-2V6c0-1.1-.9-2-2-2h-3.17L15 2zm3 15c-2.76 0-5-2.24-5-5s2.24-5 5-5s5 2.24 5 5s-2.24 5-5 5" />
-                    </svg>
-                    Absen Wajah
-                    <span
-                        class="ml-auto text-[10px] px-2 py-0.5 rounded-full bg-blue-500/20 text-blue-300 font-semibold">
-                        AI
-                    </span>
-                </a>
+                    <a href="{{ route('admin.presensi_wajah') }}"
+                        class="flex items-center gap-2 p-2 rounded-lg hover:bg-red-700 mt-2">
+                        <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24">
+                            <circle cx="12" cy="12" r="3.2" fill="currentColor" />
+                            <path fill="currentColor"
+                                d="M9 2L7.17 4H4c-1.1 0-2 .9-2 2v12c0 1.1.9 2 2 2h16c1.1 0 2-.9 2-2V6c0-1.1-.9-2-2-2h-3.17L15 2zm3 15c-2.76 0-5-2.24-5-5s2.24-5 5-5s5 2.24 5 5s-2.24 5-5 5" />
+                        </svg>
+                        Presensi Wajah
+                        <span
+                            class="ml-auto text-[10px] px-2 py-0.5 rounded-full bg-blue-500/20 text-blue-300 font-semibold">
+                            AI
+                        </span>
+                    </a>
                 @endif
             </div>
 
@@ -133,7 +134,8 @@
                     </button>
                     <!-- Sub-menu -->
                     <div id="jadwalDropdown" class="hidden mt-1 space-y-1 pl-4">
-                        <a href="{{ route('admin.penjadwalan.create') }}" class="flex items-center gap-2 p-2 rounded-lg hover:bg-red-700 text-sm">
+                        <a href="{{ route('admin.penjadwalan.create') }}"
+                            class="flex items-center gap-2 p-2 rounded-lg hover:bg-red-700 text-sm">
                             <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24">
                                 <path fill="currentColor"
                                     d="M19 3h-1V1h-2v2H8V1H6v2H5c-1.11 0-1.99.9-1.99 2L3 19c0 1.1.89 2 2 2h14c1.1 0 2-.9 2-2V5c0-1.1-.9-2-2-2zm0 16H5V8h14v11zM7 10h5v5H7v-5z" />
@@ -212,26 +214,37 @@
                     </button>
                     <!-- Sub-menu -->
                     <div id="keuanganDropdown" class="hidden mt-1 space-y-1 pl-4">
-                        <a href="#" class="flex items-center gap-2 p-2 rounded-lg hover:bg-red-700 text-sm">
+                        <a href="{{ route('admin.kelola_keuangan.dashboard') }}"
+                            class="flex items-center gap-2 p-2 rounded-lg hover:bg-red-700 text-sm">
                             <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24">
                                 <path fill="currentColor"
-                                    d="M19 3H5c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h14c1.1 0 2-.9 2-2V5c0-1.1-.9-2-2-2zM9 17H7v-7h2v7zm4 0h-2V7h2v10zm4 0h-2v-4h2v4z" />
+                                    d="M3 13h8V3H3v10zm0 8h8v-6H3v6zm10 0h8V11h-8v10zm0-18v6h8V3h-8z" />
                             </svg>
-                            Laporan Keuangan
+                            Dashboard Keuangan
                         </a>
-                        <a href="#" class="flex items-center gap-2 p-2 rounded-lg hover:bg-red-700 text-sm">
+                        <a href="{{ route('admin.kelola_keuangan.sales.index') }}"
+                            class="flex items-center gap-2 p-2 rounded-lg hover:bg-red-700 text-sm">
                             <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24">
                                 <path fill="currentColor"
                                     d="M16 6l2.29 2.29-4.88 4.88-4-4L2 16.59 3.41 18l6-6 4 4 6.3-6.29L22 12V6z" />
                             </svg>
-                            Pendapatan
+                            Penjualan Harian
                         </a>
-                        <a href="#" class="flex items-center gap-2 p-2 rounded-lg hover:bg-red-700 text-sm">
+                        <a href="{{ route('admin.kelola_keuangan.cashflow.index') }}"
+                            class="flex items-center gap-2 p-2 rounded-lg hover:bg-red-700 text-sm">
                             <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24">
                                 <path fill="currentColor"
-                                    d="M16 18l2.29-2.29-4.88-4.88-4 4L2 7.41 3.41 6l6 6 4-4 6.3 6.29L22 12v6z" />
+                                    d="M3 3h18v18H3V3zm16 16V5H5v14h14zm-4-4h-2v-2h2v2zm0-4h-2v-2h2v2zm-4 4H9v-2h2v2zm0-4H9v-2h2v2z" />
                             </svg>
-                            Pengeluaran
+                            Cashflow
+                        </a>
+                        <a href="{{ route('admin.kelola_keuangan.laporan') }}"
+                            class="flex items-center gap-2 p-2 rounded-lg hover:bg-red-700 text-sm">
+                            <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24">
+                                <path fill="currentColor"
+                                    d="M19 3H5c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h14c1.1 0 2-.9 2-2V5c0-1.1-.9-2-2-2zM9 17H7v-7h2v7zm4 0h-2V7h2v10zm4 0h-2v-4h2v4z" />
+                            </svg>
+                            Laporan Kas
                         </a>
                     </div>
                 </div>
@@ -259,7 +272,8 @@
                     </button>
                     <!-- Sub-menu -->
                     <div id="presensiDropdown" class="hidden mt-1 space-y-1 pl-4">
-                        <a href="#" class="flex items-center gap-2 p-2 rounded-lg hover:bg-red-700 text-sm">
+                        <a href="{{ route('admin.presensi.kehadiran') }}"
+                            class="flex items-center gap-2 p-2 rounded-lg hover:bg-red-700 text-sm">
                             <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24">
                                 <path fill="currentColor"
                                     d="M11.99 2C6.47 2 2 6.48 2 12s4.47 10 9.99 10C17.52 22 22 17.52 22 12S17.52 2 11.99 2M12 20c-4.42 0-8-3.58-8-8s3.58-8 8-8s8 3.58 8 8s-3.58 8-8 8" />
@@ -317,19 +331,29 @@
                     </button>
                     <!-- Sub-menu -->
                     <div id="stokDropdown" class="hidden mt-1 space-y-1 pl-4">
-                        <a href="#" class="flex items-center gap-2 p-2 rounded-lg hover:bg-red-700 text-sm">
+                        <a href="{{ route('admin.kelola_barang.index') }}"
+                            class="flex items-center gap-2 p-2 rounded-lg hover:bg-red-700 text-sm">
                             <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24">
                                 <path fill="currentColor"
                                     d="M20 4H4v2h16zm1 10v-2l-1-5H4l-1 5v2h1v6h10v-6h4v6h2v-6zm-9 4H6v-4h6z" />
                             </svg>
                             Daftar Stok
                         </a>
-                        <a href="#" class="flex items-center gap-2 p-2 rounded-lg hover:bg-red-700 text-sm">
+                        <a href="{{ route('admin.kelola_barang.masuk') }}"
+                            class="flex items-center gap-2 p-2 rounded-lg hover:bg-red-700 text-sm">
                             <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24">
                                 <path fill="currentColor"
                                     d="M7 18c-1.1 0-1.99.9-1.99 2S5.9 22 7 22s2-.9 2-2s-.9-2-2-2M1 2v2h2l3.6 7.59l-1.35 2.45c-.16.28-.25.61-.25.96c0 1.1.9 2 2 2h12v-2H7.42c-.14 0-.25-.11-.25-.25l.03-.12l.9-1.63h7.45c.75 0 1.41-.41 1.75-1.03l3.58-6.49A1.003 1.003 0 0 0 20 4H5.21l-.94-2zm16 16c-1.1 0-1.99.9-1.99 2s.89 2 1.99 2s2-.9 2-2s-.9-2-2-2" />
                             </svg>
-                            Pengadaan Barang
+                            Barang Masuk
+                        </a>
+                        <a href="{{ route('admin.kelola_barang.keluar') }}"
+                            class="flex items-center gap-2 p-2 rounded-lg hover:bg-red-700 text-sm">
+                            <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24">
+                                <path fill="currentColor"
+                                    d="M19 11H5m14 0a2 2 0 012 2v6a2 2 0 01-2 2H5a2 2 0 01-2-2v-6a2 2 0 012-2m14 0V9a2 2 0 00-2-2M5 11V9a2 2 0 012-2m0 0V5a2 2 0 012-2h6a2 2 0 012 2v2M7 7h10v4m0 0v4m0-4H7m10 4H7" />
+                            </svg>
+                            Barang Keluar
                         </a>
                     </div>
                 </div>
@@ -341,8 +365,10 @@
     <script>
         const menuBtn = document.getElementById('menuBtn');
         const sidebar = document.getElementById('sidebar');
+        const contentWrapper = document.getElementById('contentWrapper');
         menuBtn.addEventListener('click', () => {
             sidebar.classList.toggle('-translate-x-full');
+            contentWrapper.classList.toggle('ml-64');
         });
 
         const stokBtn = document.getElementById('stokBtn');

@@ -136,7 +136,7 @@
 
             <!-- RIGHT PANEL - FIXED -->
             <div
-                class="bg-white/80 backdrop-blur-sm p-6 rounded-2xl shadow-2xl sticky top-6 border border-white/50 h-[500px] overflow-y-auto">
+                class="bg-white/80 backdrop-blur-sm p-6 rounded-2xl shadow-2xl sticky top-24 border border-white/50 h-[500px] overflow-y-auto">
                 <h2 class="font-bold text-xl mb-6 flex items-center gap-3 text-gray-800">
                     <svg class="w-7 h-7 text-blue-600" fill="currentColor" viewBox="0 0 20 20">
                         <path fill-rule="evenodd"
@@ -271,8 +271,8 @@
 
     <script>
         //GLOBAL CONFIG
-        const KANTOR = { lat: -6.4915853, lng: 107.8846398 };
-        const RADIUS_KANTOR = 150;
+        const KANTOR = { lat: {{ $geolokasi->latitude ?? -6.4915853 }}, lng: {{ $geolokasi->longitude ?? 107.8846398 }} };
+        const RADIUS_KANTOR = {{ $geolokasi->radius ?? 150 }};
         let currentGPS = null;
         let map = null;
         let userMarker = null;

@@ -28,7 +28,7 @@ class PenggajianController extends Controller
             $gajiPokok = $komponen ? $komponen->gaji_pokok : 3000000;
             $tunjanganJabatan = $komponen ? $komponen->tunjangan_jabatan : 0;
             $insentifSkill = $komponen ? $komponen->insentif_skill : 0;
-            
+
             $potonganPerHari = round($gajiPokok / $totalHariKerja);
 
             $gajiTersimpan = PenggajianModel::where('id_karyawan', $karyawan->id_karyawan)
@@ -183,8 +183,8 @@ class PenggajianController extends Controller
                 'status_pembayaran' => 'lunas'
             ]);
             return redirect()->back()->with('success', 'Gaji sudah dibayarkan secara tunai.');
-        } 
-        
+        }
+
         if ($metode === 'transfer') {
             $karyawan = $gaji->karyawan;
             if (!$karyawan->nama_bank || !$karyawan->no_rekening) {
@@ -209,7 +209,7 @@ class PenggajianController extends Controller
                     'metode_pembayaran' => 'transfer',
                     'midtrans_reference_no' => $response['data']['reference_no'] ?? $referenceNo,
                     'midtrans_status' => 'queued',
-                    'status_pembayaran' => 'proses_transfer' // We can keep tertunda or change to proses_transfer
+                    'status_pembayaran' => 'proses_transfer'
                 ]);
                 return redirect()->back()->with('success', 'Transfer sedang diproses oleh sistem Midtrans.');
             } else {
@@ -256,7 +256,7 @@ class PenggajianController extends Controller
         $gaji = PenggajianModel::with(['karyawan', 'komponenGaji'])
             ->where('id_karyawan', $userId)
             ->findOrFail($id);
-            
+
         // We can reuse the admin's print view because it's just a printable invoice format without layouts
         return view('admin.penggajian.cetak', compact('gaji'));
     }
