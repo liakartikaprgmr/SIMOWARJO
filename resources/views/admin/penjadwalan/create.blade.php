@@ -2,17 +2,28 @@
 
 @section('content')
     <div class="container mx-auto max-w-4xl mt-10 px-4 sm:px-6 lg:px-8">
-        <div class="flex items-center justify-between mb-8">
+        <div
+            class="bg-red-800 text-white rounded-2xl px-8 py-6 shadow-md flex flex-col md:flex-row md:items-center md:justify-between gap-4 mb-8">
             <div>
-                <h1 class="text-3xl font-bold text-gray-800 tracking-tight">Buat Jadwal Shift</h1>
+                <h1 class="text-2xl md:text-3xl font-bold tracking-tight">
+                    Buat Jadwal Shift
+                </h1>
+
+                <p class="text-red-100 text-sm mt-1">
+                    Atur dan kelola jadwal kerja karyawan
+                </p>
             </div>
+
             <a href="{{ route('admin.penjadwalan.index') }}"
-                class="flex items-center justify-center w-10 h-10 bg-white border border-gray-200 text-gray-600 rounded-full shadow-sm hover:bg-gray-50 hover:text-red-600 hover:border-red-200 transition-all focus:outline-none focus:ring-2 focus:ring-red-500"
-                title="Kembali">
-                <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="none" stroke="currentColor"
+                class="inline-flex items-center gap-2 bg-white hover:bg-red-50 text-red-800 text-sm font-semibold px-5 py-3 rounded-2xl transition-all shadow-md border border-red-700">
+
+                <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" fill="none" stroke="currentColor"
                     viewBox="0 0 24 24" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+
                     <path d="M19 12H5M12 19l-7-7 7-7" />
                 </svg>
+
+                Kembali
             </a>
         </div>
 

@@ -2,16 +2,22 @@
 
 @section('content')
     <div class="container mx-auto mt-10 px-4 sm:px-6 lg:px-8">
-        <div class="flex flex-col sm:flex-row justify-between items-start sm:items-center mb-8 gap-4">
+        <div
+            class="bg-red-800 text-white rounded-2xl px-8 py-6 shadow-md flex flex-col md:flex-row md:items-center md:justify-between gap-4 mb-8">
             <div>
-                <h1 class="text-3xl font-bold text-gray-800 tracking-tight">Lihat Jadwal Shift</h1>
+                <h1 class="text-2xl md:text-3xl font-bold tracking-tight">
+                    Lihat Jadwal Shift
+                </h1>
+
+                <p class="text-red-100 text-sm mt-1">
+                    Monitoring dan pengelolaan jadwal kerja karyawan
+                </p>
             </div>
             <a href="{{ route('admin.penjadwalan.create') }}"
-                class="inline-flex items-center justify-center bg-green-700 hover:bg-green-800 text-white font-medium py-2 px-4 rounded-xl shadow-sm hover:shadow-md transition-all duration-200 focus:ring-2 focus:ring-green-500/50">
-                <svg class="w-5 h-5 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24"
-                    xmlns="http://www.w3.org/2000/svg">
-                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 6v6m0 0v6m0-6h6m-6 0H6">
-                    </path>
+                class="inline-flex items-center gap-2 bg-white hover:bg-red-50 text-red-800 text-sm font-semibold px-5 py-3 rounded-2xl transition-all shadow-md border border-red-700">
+                <svg xmlns="http://www.w3.org/2000/svg" class="w-5 h-5" fill="none" viewBox="0 0 24 24"
+                    stroke="currentColor">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4v16m8-8H4" />
                 </svg>
                 Tambah Jadwal
             </a>
