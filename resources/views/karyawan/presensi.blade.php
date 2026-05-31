@@ -50,10 +50,23 @@
     <!-- Sidebar -->
     @include('karyawan.sidebarempl')
 
+    <!-- Mobile Header (hanya muncul di layar kecil) -->
+    <div class="md:hidden fixed top-0 left-0 w-full bg-red-800 text-white z-40 px-4 py-3 flex items-center justify-between shadow-md">
+        <div class="flex items-center gap-2">
+            <img src="{{ asset('assets/logo.png') }}" class="w-8 h-8 bg-white rounded-full" alt="Logo">
+            <h1 class="font-bold text-lg">SIMOWARJO</h1>
+        </div>
+        <button id="menuBtn" class="focus:outline-none p-1 bg-red-700 rounded-md">
+            <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6 text-white" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16" />
+            </svg>
+        </button>
+    </div>
+
     <!-- Content -->
-    <div class="ml-64 p-6">
+    <div class="ml-0 md:ml-64 p-4 md:p-6 pt-20 md:pt-6">
         <!-- Header -->
-        <div class="flex justify-between items-center mb-6">
+        <div class="flex flex-col sm:flex-row sm:justify-between sm:items-center gap-3 mb-6">
             <div>
                 <h1 class="flex items-center gap-1 text-2xl font-bold">
                     <svg class="text-blue-600" xmlns="http://www.w3.org/2000/svg" width="30" height="30"
@@ -79,9 +92,9 @@
             </div>
         </div>
 
-        <div class="grid grid-cols-3 gap-6">
+        <div class="grid grid-cols-1 lg:grid-cols-3 gap-6">
             <!-- LEFT -->
-            <div class="col-span-2">
+            <div class="col-span-1 lg:col-span-2">
                 <!-- Button -->
                 <div class="flex gap-4 mb-6">
                     <a href="/absen/masuk" onclick="setAbsen(event, 'masuk')" id="btnMasuk"

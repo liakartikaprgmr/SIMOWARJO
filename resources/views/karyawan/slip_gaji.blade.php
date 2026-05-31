@@ -1,58 +1,54 @@
-<!DOCTYPE html>
-<html lang="en">
+@extends('karyawan.layoutempl')
 
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Slip Gaji Karyawan</title>
-    <script src="https://cdn.tailwindcss.com"></script>
-</head>
+@section('content')
 
-<body class="bg-gray-100">
-    <!-- Sidebar -->
-    @include('karyawan.sidebarempl')
+    <div>
+        <div class="max-w-6xl mx-auto mt-15 mb-2">
+            <!-- Header + Filter + Note Box -->
+            <div
+                class="bg-blue-50 border border-blue-100 rounded-3xl p-5 mb-2 shadow-sm flex flex-col lg:flex-row lg:items-center lg:justify-between gap-2">
 
-    <!-- Content -->
-    <div class="ml-64 p-6">
-        <div class="max-w-6xl mx-auto mt-15 mb-10">
-            <!-- Header and Filter Form -->
-            <div class="flex flex-col md:flex-row justify-between items-start md:items-center mb-6 gap-2">
-                <h1 class="text-3xl font-bold text-gray-800 tracking-tight">Arsip Slip Gaji</h1>
-
-                <form action="{{ route('karyawan.slip_gaji') }}" method="GET"
-                    class="flex items-center gap-3 bg-white p-2 rounded-xl shadow-sm border border-gray-100">
-                    <input type="month" name="periode" value="{{ $bulanTerpilih }}"
-                        class="rounded-lg border-gray-200 border px-3 py-2.5 focus:ring-2 focus:ring-blue-500/20 focus:border-blue-500 outline-none text-sm font-medium text-gray-700 transition-all duration-200">
-                    <button type="submit"
-                        class="bg-blue-600 hover:bg-blue-700 text-white px-5 py-2.5 rounded-lg text-sm font-medium transition-all shadow-sm hover:shadow focus:ring-2 focus:ring-blue-500/50 cursor-pointer flex items-center gap-2">
-                        <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"
+                <!-- Left Content -->
+                <div class="flex items-start gap-4">
+                    <div class="bg-white p-3 rounded-2xl shadow-sm border border-blue-100 shrink-0">
+                        <svg class="w-7 h-7 text-blue-600" fill="none" stroke="currentColor" viewBox="0 0 24 24"
                             xmlns="http://www.w3.org/2000/svg">
                             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                                d="M3 4a1 1 0 011-1h16a1 1 0 011 1v2.586a1 1 0 01-.293.707l-6.414 6.414a1 1 0 00-.293.707V17l-4 4v-6.586a1 1 0 00-.293-.707L3.293 7.293A1 1 0 013 6.586V4z">
+                                d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z">
                             </path>
                         </svg>
-                        Filter Arsip
+                    </div>
+
+                    <div>
+                        <h2 class="text-xl font-bold text-blue-900">
+                            Arsip Slip Gaji
+                        </h2>
+                        <p class="text-sm text-blue-700 mt-1 leading-relaxed">
+                            Lihat dan cetak slip gaji karyawan untuk periode bulan tertentu.
+                        </p>
+                    </div>
+                </div>
+
+                <!-- Filter -->
+                <form action="{{ route('karyawan.slip_gaji') }}" method="GET"
+                    class="relative w-full lg:w-[300px] shrink-0">
+                    <input type="month" name="periode" value="{{ $bulanTerpilih }}" class="w-full bg-white text-blue-600 rounded-2xl pl-5 pr-36 py-4
+                   border-2 border-blue-600 shadow-md text-sm font-semibold
+                   focus:ring-2 focus:ring-blue-400 outline-none">
+
+                    <button type="submit" class="absolute right-2 top-1/2 -translate-y-1/2
+                   bg-white text-blue-700 hover:bg-blue-50
+                   px-4 py-2 rounded-xl text-sm font-semibold
+                   flex items-center gap-2 transition-all shadow-sm">
+                        <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 4a1 1 0 011-1h16a1 1 0 011 1v2.586a1 1 0 01-.293.707
+                       l-6.414 6.414a1 1 0 00-.293.707V17l-4 4v-6.586
+                       a1 1 0 00-.293-.707L3.293 7.293A1 1 0 013 6.586V4z">
+                            </path>
+                        </svg>
+                        Filter
                     </button>
                 </form>
-            </div>
-
-            <!-- Note Box -->
-            <div
-                class="bg-blue-50/80 border border-blue-100 p-4 rounded-2xl shadow-sm flex items-start sm:items-center mb-10">
-                <div class="bg-white p-2 rounded-xl shadow-sm border border-blue-50 mr-4">
-                    <svg class="w-6 h-6 text-blue-600" fill="none" stroke="currentColor" viewBox="0 0 24 24"
-                        xmlns="http://www.w3.org/2000/svg">
-                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                            d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z">
-                        </path>
-                    </svg>
-                </div>
-                <div>
-                    <h2 class="text-base font-bold text-blue-900">Informasi Arsip</h2>
-                    <p class="text-sm text-blue-700 mt-0.5 leading-relaxed">
-                        Lihat dan cetak slip gaji karyawan untuk periode bulan tertentu.
-                    </p>
-                </div>
             </div>
 
             <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
@@ -144,6 +140,5 @@
             </div>
         </div>
     </div>
-</body>
 
-</html>
+@endsection

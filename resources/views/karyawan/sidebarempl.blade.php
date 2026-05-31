@@ -1,18 +1,9 @@
-<!DOCTYPE html>
-<html lang="en">
+<!-- SIDEBAR COMPONENT -->
+    <!-- Overlay for mobile -->
+    <div id="sidebarOverlay" class="fixed inset-0 bg-black/50 z-40 hidden md:hidden"></div>
 
-<head>
-    <meta charset="UTF-8">
-    <title>Karyawan Dashboard</title>
-
-    <script src="https://cdn.tailwindcss.com"></script>
-</head>
-
-<body class="bg-gray-100">
-
-    <!-- SIDEBAR -->
     <aside id="sidebar"
-        class="fixed top-0 left-0 w-64 h-screen bg-red-800 text-white pt-6 transform -translate-x-full md:translate-x-0 transition-transform duration-300">
+        class="fixed top-0 left-0 w-64 h-screen bg-red-800 text-white pt-6 transform -translate-x-full md:translate-x-0 transition-transform duration-300 z-50 flex flex-col">
         <div>
             <div class="flex items-center gap-3 px-4">
                 <img src="{{ asset('assets/logo.png') }}" class="w-10 h-10 bg-white rounded-full" alt="">
@@ -23,7 +14,7 @@
                 <!-- UTAMA -->
                 <div>
                     <p class="text-xs text-red-200 mb-2 py-2">SELF SERVICE</p>
-                    <a href="#" class="flex items-center gap-2 p-2 rounded-lg hover:bg-red-700">
+                    <a href="/karyawan/dashboard" class="flex items-center gap-2 p-2 rounded-lg hover:bg-red-700">
                         <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24">
                             <path fill="currentColor"
                                 d="M4 13h6c.55 0 1-.45 1-1V4c0-.55-.45-1-1-1H4c-.55 0-1 .45-1 1v8c0 .55.45 1 1 1m0 8h6c.55 0 1-.45 1-1v-4c0-.55-.45-1-1-1H4c-.55 0-1 .45-1 1v4c0 .55.45 1 1 1m10 0h6c.55 0 1-.45 1-1v-8c0-.55-.45-1-1-1h-6c-.55 0-1 .45-1 1v8c0 .55.45 1 1 1M13 4v4c0 .55.45 1 1 1h6c.55 0 1-.45 1-1V4c0-.55-.45-1-1-1h-6c-.55 0-1 .45-1 1" />
@@ -42,7 +33,8 @@
                             AI
                         </span>
                     </a>
-                    <a href="{{ route('karyawan.jadwal_kerja') }}" class="flex items-center gap-2 p-2 rounded-lg hover:bg-red-700">
+                    <a href="{{ route('karyawan.jadwal_kerja') }}"
+                        class="flex items-center gap-2 p-2 rounded-lg hover:bg-red-700">
                         <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24">
                             <path fill="currentColor"
                                 d="M19 4h-1V2h-2v2H8V2H6v2H5c-1.11 0-1.99.9-1.99 2L3 20a2 2 0 0 0 2 2h14c1.1 0 2-.9 2-2V6c0-1.1-.9-2-2-2m0 16H5V10h14zM9 14H7v-2h2zm4 0h-2v-2h2zm4 0h-2v-2h2zm-8 4H7v-2h2zm4 0h-2v-2h2zm4 0h-2v-2h2z" />
@@ -102,7 +94,9 @@
                     <button id="profileBtn"
                         class="w-full flex items-center justify-between focus:outline-none hover:bg-red-700 p-2 rounded-lg transition">
                         <div class="flex items-center gap-2">
-                            <img src="{{ $user && $user->foto && $user->foto !== 'default.jpg' ? url('known_faces/' . basename($user->foto)) : 'https://i.pravatar.cc/40' }}" class="w-10 h-10 rounded-full object-cover bg-white" alt="Profile" onerror="this.src='https://i.pravatar.cc/40'">
+                            <img src="{{ $user && $user->foto && $user->foto !== 'default.jpg' ? url('known_faces/' . basename($user->foto)) : 'https://i.pravatar.cc/40' }}"
+                                class="w-10 h-10 rounded-full object-cover bg-white" alt="Profile"
+                                onerror="this.src='https://i.pravatar.cc/40'">
                             <div class="text-sm text-left">
                                 <p class="font-semibold text-white">{{ $user?->nama ?? 'Guest User' }}</p>
                                 <p class="text-red-200 text-xs leading-tight">{{ $user?->email ?? 'Not Logged In' }}</p>
@@ -138,10 +132,24 @@
 
     <!-- SCRIPT SIDEBAR -->
     <script>
-        const menuBtn = document.getElementById('menuBtn');
-        const sidebar = document.getElementById('sidebar');
-        menuBtn.addEventListener('click', () => {
-            sidebar.classList.toggle('-translate-x-full');
+        document.addEventListener('DOMContentLoaded', function() {
+            const menuBtn = document.getElementById('menuBtn');
+            const sidebar = document.getElementById('sidebar');
+            const sidebarOverlay = document.getElementById('sidebarOverlay');
+            
+            if (menuBtn && sidebar) {
+                menuBtn.addEventListener('click', () => {
+                    sidebar.classList.toggle('-translate-x-full');
+                    if (sidebarOverlay) sidebarOverlay.classList.toggle('hidden');
+                });
+            }
+            
+            if (sidebarOverlay && sidebar) {
+                sidebarOverlay.addEventListener('click', () => {
+                    sidebar.classList.add('-translate-x-full');
+                    sidebarOverlay.classList.add('hidden');
+                });
+            }
         });
     </script>
     <!-- SCRIPT DROPDOWN -->
@@ -170,6 +178,3 @@
             });
         }
     </script>
-</body>
-
-</html>

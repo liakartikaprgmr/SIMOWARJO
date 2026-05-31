@@ -2,9 +2,7 @@
 
 @section('content')
     <div class="container mx-auto px-4 sm:px-6 lg:px-8 mt-15 mb-10">
-        <div class="mb-8">
-            <h1 class="text-3xl font-bold text-gray-800 mb-4 tracking-tight">Jadwal Kerja</h1>
-            
+        <div class="mb-2"> 
             <div class="bg-blue-50/80 border border-blue-100 p-5 rounded-2xl shadow-sm flex items-start sm:items-center">
                 <div class="bg-white p-2 rounded-xl shadow-sm border border-blue-50 mr-4">
                     <svg class="w-6 h-6 text-blue-600" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
@@ -12,7 +10,7 @@
                     </svg>
                 </div>
                 <div>
-                    <h2 class="text-base font-bold text-blue-900">Periode Minggu Ini</h2>
+                    <h2 class="text-base font-bold text-blue-900">Jadwal Kerja Minggu Ini</h2>
                     <p class="text-sm text-blue-700 mt-0.5 leading-relaxed">
                         Menampilkan jadwal kerja Anda dari tanggal <span class="font-bold bg-white px-2 py-0.5 rounded text-blue-800">{{ $startOfWeek->translatedFormat('d M Y') }}</span> hingga <span class="font-bold bg-white px-2 py-0.5 rounded text-blue-800">{{ $endOfWeek->translatedFormat('d M Y') }}</span>.
                     </p>
