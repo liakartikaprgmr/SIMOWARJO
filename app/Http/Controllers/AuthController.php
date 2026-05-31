@@ -25,7 +25,7 @@ class AuthController extends Controller
 
         if (Auth::attempt($credentials)) {
             $request->session()->regenerate();
-            
+
             if (Auth::user()->role === 'supervisor') {
                 return redirect()->intended('/admin/dashboard');
             }
@@ -46,8 +46,8 @@ class AuthController extends Controller
         Auth::logout();
         $request->session()->invalidate();
         $request->session()->regenerateToken();
-        
-        return redirect('/');
+
+        return redirect('/login');
     }
 
 
@@ -109,7 +109,7 @@ class AuthController extends Controller
             if (!file_exists($dir)) {
                 return back()->with('error', 'Folder known_faces tidak ada!');
             }
-            $foto->move($dir, $filename);  
+            $foto->move($dir, $filename);
             $karyawan->foto = "known_faces/{$filename}";
             $karyawan->save();
 

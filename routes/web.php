@@ -1,8 +1,6 @@
 <?php
 
 use Illuminate\Support\Facades\Route;
-use Illuminate\Support\Facades\Http;
-use Illuminate\Http\Request;
 use App\Http\Controllers\AuthController;
 use App\Http\Controllers\DasboardAdminController;
 use App\Http\Controllers\DashboardKaryawanController;
@@ -12,6 +10,9 @@ use App\Http\Controllers\StokController;
 use App\Http\Controllers\BarangMasukController;
 use App\Http\Controllers\BarangKeluarController;
 use App\Http\Controllers\LaporanStokController;
+use App\Http\Controllers\PenggajianController;
+use App\Http\Controllers\PenjadwalanController;
+use App\Http\Controllers\KeuanganController;
 
 
 
@@ -24,6 +25,8 @@ Route::get('/login', [AuthController::class, 'login'])->name('login');
 Route::post('/login', [AuthController::class, 'authenticate']);
 Route::get('/register', [AuthController::class, 'showRegister'])->name('register');
 Route::post('/register', [AuthController::class, 'register']);
+Route::post('/logout', [AuthController::class, 'logout'])->name('logout');
+
 
 // Route untuk admin
 Route::get('/admin/dashboard', [DasboardAdminController::class, 'dashboard'])->name('admin.dashboard');
@@ -33,12 +36,17 @@ Route::get('/karyawan/dashboard', [DashboardKaryawanController::class, 'dashboar
 Route::get('/karyawan/presensi', [PresensiController::class, 'index'])->name('karyawan.presensi');
 Route::post('/presensi/upload', [PresensiController::class, 'upload'])->name('presensi.upload');
 
-use App\Http\Controllers\PenggajianController;
-
-use App\Http\Controllers\PenjadwalanController;
 
 // Rute Admin (Persetujuan Izin & Penggajian)
 Route::prefix('admin')->name('admin.')->group(function () {
+    // Kelola Karyawan (CRUD)
+    Route::get('/kelola_karyawan', [KaryawanController::class, 'kelola_karyawan'])->name('kelola_karyawan');
+    Route::get('/tambah_karyawan', [KaryawanController::class, 'tambah_karyawan'])->name('tambah_karyawan');
+    Route::post('/tambah_karyawan', [KaryawanController::class, 'store_karyawan'])->name('store_karyawan');
+    Route::get('/edit_karyawan/{id}', [KaryawanController::class, 'edit_karyawan'])->name('edit_karyawan');
+    Route::post('/update_karyawan/{id}', [KaryawanController::class, 'update_karyawan'])->name('update_karyawan');
+    Route::delete('/delete_karyawan/{id}', [KaryawanController::class, 'delete_karyawan'])->name('delete_karyawan');
+
     // Penjadwalan
     Route::get('/penjadwalan', [PenjadwalanController::class, 'indexAdmin'])->name('penjadwalan.index');
     Route::get('/penjadwalan/create', [PenjadwalanController::class, 'create'])->name('penjadwalan.create');
@@ -113,7 +121,6 @@ Route::prefix('admin/kelola_barang')->name('admin.kelola_barang.')->middleware('
     Route::get('/laporan/excel', [LaporanStokController::class, 'exportExcel'])->name('laporan.excel');
 });
 
-use App\Http\Controllers\KeuanganController;
 
 // Kelola Keuangan
 Route::prefix('admin/kelola_keuangan')->name('admin.kelola_keuangan.')->middleware('role:supervisor,leader_shift,admin')->group(function () {
@@ -139,3 +146,4 @@ Route::prefix('admin/kelola_keuangan')->name('admin.kelola_keuangan.')->middlewa
 use App\Http\Controllers\MidtransWebhookController;
 Route::post('/midtrans/iris-webhook', [MidtransWebhookController::class, 'handleIris'])->name('midtrans.iris_webhook');
 Route::post('/midtrans/simulate-webhook', [MidtransWebhookController::class, 'simulateWebhook'])->name('midtrans.simulate_webhook');
+
