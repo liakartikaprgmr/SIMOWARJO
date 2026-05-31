@@ -102,8 +102,7 @@
                     <button id="profileBtn"
                         class="w-full flex items-center justify-between focus:outline-none hover:bg-red-700 p-2 rounded-lg transition">
                         <div class="flex items-center gap-2">
-                            <img src="{{ $user?->foto ? url($user->foto) : 'https://i.pravatar.cc/40' }}"
-                                class="w-10 h-10 rounded-full object-cover bg-white" alt="Profile">
+                            <img src="{{ $user && $user->foto && $user->foto !== 'default.jpg' ? url('known_faces/' . basename($user->foto)) : 'https://i.pravatar.cc/40' }}" class="w-10 h-10 rounded-full object-cover bg-white" alt="Profile" onerror="this.src='https://i.pravatar.cc/40'">
                             <div class="text-sm text-left">
                                 <p class="font-semibold text-white">{{ $user?->nama ?? 'Guest User' }}</p>
                                 <p class="text-red-200 text-xs leading-tight">{{ $user?->email ?? 'Not Logged In' }}</p>

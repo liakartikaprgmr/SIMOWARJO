@@ -4,20 +4,39 @@
 
     <main class="ml-55 mt-15 p-3">
         <div class="p-6">
-            <h1 class="text-2xl font-bold mb-6">Kelola Karyawan</h1>
+            <div
+                class="bg-red-800 text-white rounded-2xl px-8 py-6 shadow-md flex flex-col md:flex-row md:items-center md:justify-between gap-4 mb-6">
+                <div>
+                    <h1 class="text-2xl font-bold">Kelola Karyawan</h1>
+                </div>
+                <div class="flex items-center gap-4">
+                    <a href="{{ route('admin.tambah_karyawan') }}"
+                        class="inline-flex items-center gap-2 bg-white hover:bg-red-50 text-red-800 text-sm font-semibold px-5 py-3 rounded-2xl transition-all shadow-md border border-red-700">
+                        <svg class="w-4 h-4" viewBox="0 0 24 24" fill="currentColor">
+                            <path d="M19 13h-6v6h-2v-6H5v-2h6V5h2v6h6z" />
+                        </svg>
+                        Tambah Karyawan
+                    </a>
+                </div>
+            </div>
 
+            {{-- ALERT SUCCESS --}}
             @if(session('success'))
-                <div class="bg-green-100 border-l-4 border-green-500 text-green-700 p-4 mb-6 shadow-sm rounded-r-lg"
-                    role="alert">
-                    <p class="font-medium">Berhasil!</p>
-                    <p>{{ session('success') }}</p>
+                <div
+                    class="bg-green-50 border border-green-200 text-green-700 px-5 py-4 rounded-2xl shadow-sm mb-6 flex items-start gap-3">
+
+                    <svg xmlns="http://www.w3.org/2000/svg" class="w-5 h-5 mt-0.5 text-green-600" fill="none"
+                        viewBox="0 0 24 24" stroke="currentColor">
+
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7" />
+                    </svg>
+
+                    <div>
+                        <p class="font-semibold">Berhasil!</p>
+                        <p class="text-sm">{{ session('success') }}</p>
+                    </div>
                 </div>
             @endif
-
-            <a href="{{ route('admin.tambah_karyawan') }}" id="tambahBtn"
-                class="inline-block mb-6 bg-green-800 text-white px-4 py-2 rounded-lg hover:bg-green-700 transition">
-                + Tambah Karyawan
-            </a>
 
             <div class="bg-white rounded-lg shadow overflow-hidden">
                 <table class="min-w-full divide-y divide-gray-200">
