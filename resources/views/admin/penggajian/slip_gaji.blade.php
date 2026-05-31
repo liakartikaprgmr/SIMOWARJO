@@ -2,19 +2,28 @@
 
 @section('content')
     <div class="px-6 py-8">
-        <div class="max-w-6xl mx-auto">
-            <div class="flex justify-between items-end mb-6">
+        <div class="max-w-6xl mx-auto mt-5">
+            <div
+                class="bg-red-800 text-white rounded-2xl px-8 py-6 shadow-md flex flex-col lg:flex-row lg:items-center lg:justify-between gap-5 mb-2">
                 <div>
-                    <h1 class="text-3xl font-bold text-gray-800">Arsip Slip Gaji</h1>
-                    <p class="text-gray-500 mt-1">Lihat dan cetak slip gaji karyawan untuk periode tertentu</p>
+                    <h1 class="text-2xl md:text-3xl font-bold tracking-tight">
+                        Arsip Slip Gaji
+                    </h1>
                 </div>
-
-                <form action="{{ route('admin.penggajian.slip_gaji') }}" method="GET" class="flex items-center gap-3">
+                <form action="{{ route('admin.penggajian.slip_gaji') }}" method="GET"
+                    class="flex flex-col sm:flex-row items-stretch sm:items-center gap-3">
                     <input type="month" name="periode" value="{{ $bulanTerpilih }}"
-                        class="rounded-lg border-gray-300 border p-2 focus:ring-red-500 focus:border-red-500 text-sm">
+                        class="bg-white/95 text-gray-700 rounded-xl border border-red-200 px-4 py-3 text-sm shadow-sm focus:ring-2 focus:ring-white focus:border-white outline-none">
+
                     <button type="submit"
-                        class="bg-red-700 hover:bg-red-800 text-white px-4 py-2 rounded-lg text-sm font-medium transition cursor-pointer">Filter
-                        Arsip</button>
+                        class="inline-flex items-center justify-center gap-2 bg-white hover:bg-red-50 text-red-800 font-semibold px-5 py-3 rounded-xl transition-all shadow-md border border-red-700 cursor-pointer">
+                        <svg xmlns="http://www.w3.org/2000/svg" class="w-4 h-4" fill="none" viewBox="0 0 24 24"
+                            stroke="currentColor">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                d="M3 4a1 1 0 011-1h3.586a1 1 0 01.707.293l1.414 1.414A1 1 0 0010.414 4H20a1 1 0 011 1v2H3V4zm0 5h18v10a1 1 0 01-1 1H4a1 1 0 01-1-1V9z" />
+                        </svg>
+                        Filter Arsip
+                    </button>
                 </form>
             </div>
 
@@ -53,16 +62,18 @@
                                 <span class="font-medium">Rp {{ number_format($gaji->gaji_pokok, 0, ',', '.') }}</span>
                             </div>
                             @if(optional($gaji->karyawan->komponenGaji)->tunjangan_jabatan > 0)
-                            <div class="flex justify-between">
-                                <span class="text-gray-500">Tunjangan Jabatan</span>
-                                <span class="font-medium">Rp {{ number_format(optional($gaji->karyawan->komponenGaji)->tunjangan_jabatan, 0, ',', '.') }}</span>
-                            </div>
+                                <div class="flex justify-between">
+                                    <span class="text-gray-500">Tunjangan Jabatan</span>
+                                    <span class="font-medium">Rp
+                                        {{ number_format(optional($gaji->karyawan->komponenGaji)->tunjangan_jabatan, 0, ',', '.') }}</span>
+                                </div>
                             @endif
                             @if(optional($gaji->karyawan->komponenGaji)->insentif_skill > 0)
-                            <div class="flex justify-between">
-                                <span class="text-gray-500">Insentif Skill</span>
-                                <span class="font-medium">Rp {{ number_format(optional($gaji->karyawan->komponenGaji)->insentif_skill, 0, ',', '.') }}</span>
-                            </div>
+                                <div class="flex justify-between">
+                                    <span class="text-gray-500">Insentif Skill</span>
+                                    <span class="font-medium">Rp
+                                        {{ number_format(optional($gaji->karyawan->komponenGaji)->insentif_skill, 0, ',', '.') }}</span>
+                                </div>
                             @endif
                             @if($gaji->total_potongan > 0)
                                 <div class="flex justify-between text-red-500">

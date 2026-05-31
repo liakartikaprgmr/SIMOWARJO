@@ -36,6 +36,14 @@ Route::get('/karyawan/dashboard', [DashboardKaryawanController::class, 'dashboar
 Route::get('/karyawan/presensi', [PresensiController::class, 'index'])->name('karyawan.presensi');
 Route::post('/presensi/upload', [PresensiController::class, 'upload'])->name('presensi.upload');
 
+// Serve foto profil 
+Route::get('/known_faces/{filename}', function ($filename) {
+    $path = base_path('ai_absensi/known_faces/' . urldecode($filename));
+    if (!file_exists($path)) {
+        abort(404);
+    }
+    return response()->file($path);
+})->where('filename', '.*')->name('known_faces');
 
 // Rute Admin (Persetujuan Izin & Penggajian)
 Route::prefix('admin')->name('admin.')->group(function () {

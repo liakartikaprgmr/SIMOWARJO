@@ -2,19 +2,35 @@
 
 @section('content')
     <div class="px-6 py-8">
-        <div class="max-w-7xl mx-auto">
-            <div class="flex justify-between items-end mb-6">
+        <div class="max-w-7xl mx-auto mt-5">
+            <div
+                class="bg-red-800 text-white rounded-2xl px-8 py-6 shadow-md flex flex-col lg:flex-row lg:items-center lg:justify-between gap-5 mb-2">
                 <div>
-                    <h1 class="text-3xl font-bold text-gray-800">Manajemen Payroll</h1>
-                    <p class="text-gray-500 mt-1">Kalkulasi dan proses gaji bulanan karyawan</p>
+                    <h1 class="text-2xl md:text-3xl font-bold tracking-tight">
+                        Manajemen Payroll
+                    </h1>
                 </div>
-
-                <form action="{{ route('admin.penggajian.payroll') }}" method="GET" class="flex items-center gap-3">
-                    <input type="month" name="periode" value="{{ $bulanTerpilih }}"
-                        class="rounded-lg border-gray-300 border p-2 focus:ring-red-500 focus:border-red-500 text-sm">
+                <form action="{{ route('admin.penggajian.payroll') }}"
+                    method="GET"
+                    class="flex flex-col sm:flex-row items-stretch sm:items-center gap-3">
+                    <input type="month"
+                        name="periode"
+                        value="{{ $bulanTerpilih }}"
+                        class="bg-white/95 text-gray-700 rounded-xl border border-red-200 px-4 py-3 text-sm shadow-sm focus:ring-2 focus:ring-white focus:border-white outline-none">
                     <button type="submit"
-                        class="bg-red-700 hover:bg-red-800 text-white px-4 py-2 rounded-lg text-sm font-medium transition">Load
-                        Data</button>
+                        class="inline-flex items-center justify-center gap-2 bg-white hover:bg-red-50 text-red-800 font-semibold px-5 py-3 rounded-xl transition-all shadow-md border border-red-700">
+                        <svg xmlns="http://www.w3.org/2000/svg"
+                            class="w-4 h-4"
+                            fill="none"
+                            viewBox="0 0 24 24"
+                            stroke="currentColor">
+                            <path stroke-linecap="round"
+                                stroke-linejoin="round"
+                                stroke-width="2"
+                                d="M4 4v5h.582m15.356 2A8.001 8.001 0 004.582 9m0 0H9m11 11v-5h-.581m0 0a8.003 8.003 0 01-15.357-2m15.357 2H15" />
+                        </svg>
+                        Load Data
+                    </button>
                 </form>
             </div>
 

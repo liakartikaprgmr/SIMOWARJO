@@ -3,19 +3,29 @@
 @section('content')
     <div class="px-6 py-8">
         <div class="max-w-7xl mx-auto">
-            <div class="mb-8">
-                <h1 class="text-3xl font-bold text-gray-800 mb-4 tracking-tight">Komponen Gaji Karyawan</h1>
-                
-                <div class="bg-blue-50/80 border border-blue-100 p-5 rounded-2xl shadow-sm flex items-start sm:items-center">
-                    <div class="bg-white p-2 rounded-xl shadow-sm border border-blue-50 mr-4">
-                        <svg class="w-6 h-6 text-blue-600" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
-                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8c-1.657 0-3 .895-3 2s1.343 2 3 2 3 .895 3 2-1.343 2-3 2m0-8c1.11 0 2.08.402 2.599 1M12 8V7m0 1v8m0 0v1m0-1c-1.11 0-2.08-.402-2.599-1M21 12a9 9 0 11-18 0 9 9 0 0118 0z"></path>
+            <div class="mb-2 mt-5">
+                <div
+                    class="bg-red-800 border border-red-700 rounded-2xl shadow-sm p-6 flex flex-col sm:flex-row sm:items-center gap-4">
+                    <div
+                        class="flex items-center justify-center w-14 h-14 rounded-2xl bg-red-100 text-red-700 shadow-sm shrink-0">
+
+                        <svg class="w-7 h-7" fill="none" stroke="currentColor" viewBox="0 0 24 24"
+                            xmlns="http://www.w3.org/2000/svg">
+
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                d="M12 8c-1.657 0-3 .895-3 2s1.343 2 3 2 3 .895 3 2-1.343 2-3 2m0-8c1.11 0 2.08.402 2.599 1M12 8V7m0 1v8m0 0v1m0-1c-1.11 0-2.08-.402-2.599-1M21 12a9 9 0 11-18 0 9 9 0 0118 0z">
+                            </path>
                         </svg>
                     </div>
+
+                    {{-- Text --}}
                     <div>
-                        <h2 class="text-base font-bold text-blue-900">Informasi Komponen</h2>
-                        <p class="text-sm text-blue-700 mt-0.5 leading-relaxed">
-                            Kelola gaji pokok, tunjangan jabatan, dan insentif skill per karyawan.
+                        <h1 class="text-lg font-bold text-white">
+                            Komponen Penggajian
+                        </h1>
+
+                        <p class="text-sm text-red-100 mt-1 leading-relaxed">
+                            Kelola gaji pokok, tunjangan jabatan, dan insentif skill untuk setiap karyawan.
                         </p>
                     </div>
                 </div>
