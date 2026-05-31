@@ -7,61 +7,80 @@ use App\Models\KaryawanModel;
 use App\Models\PresensiModel;
 use App\Models\PengajuanIzinModel;
 use App\Models\PenggajianModel;
+use App\Models\KeuanganModel;
+use App\Models\Barang;
+use App\Models\KategoriBarang;
 use Carbon\Carbon;
 
 class DasboardAdminController extends Controller
 {
     public function dashboard()
     {
-        //Total Karyawan
+        // 1. Total Karyawan
         $totalKaryawan = KaryawanModel::count();
 
-        //Kehadiran Hari Ini
+        // 2. Kehadiran Hari Ini
         $kehadiranHariIni = PresensiModel::whereDate('created_at', Carbon::today())->count();
 
-        //Perizinan Menunggu
+        // 3. Perizinan Menunggu (Pending)
         $perizinanPending = PengajuanIzinModel::where('status', 'pending')->count();
 
-        //Penggajian Bulan Ini (Format periode "YYYY-MM")
-        $currentMonth = Carbon::now()->format('Y-m');
-        $penggajianBulanIni = PenggajianModel::where('periode', $currentMonth)->sum('total_gaji');
-        if ($penggajianBulanIni == 0) {
-            $penggajianBulanIni = PenggajianModel::whereMonth('created_at', Carbon::now()->month)->sum('total_gaji');
+        // 4. Pendapatan Bulan Ini 
+        $currentMonth = Carbon::now()->month;
+        $currentYear = Carbon::now()->year;
+        $pendapatanBulanIni = KeuanganModel::pemasukan()
+            ->whereMonth('tanggal', $currentMonth)
+            ->whereYear('tanggal', $currentYear)
+            ->sum('jumlah');
+
+        // 5. Total Stok Barang (Sum of 'stok_saat_ini' in 'barang' table)
+        $totalStokBarang = Barang::sum('stok_saat_ini');
+
+        // 6. Statistik Pendapatan vs Pengeluaran (6 Bulan Terakhir)
+        $financialLabels = [];
+        $incomeData = [];
+        $expenseData = [];
+
+        for ($i = 5; $i >= 0; $i--) {
+            $month = Carbon::now()->subMonths($i);
+            $financialLabels[] = $month->locale('id')->isoFormat('MMMM YYYY');
+
+            $incomeData[] = (float) KeuanganModel::pemasukan()
+                ->whereMonth('tanggal', $month->month)
+                ->whereYear('tanggal', $month->year)
+                ->sum('jumlah');
+
+            $expenseData[] = (float) KeuanganModel::pengeluaran()
+                ->whereMonth('tanggal', $month->month)
+                ->whereYear('tanggal', $month->year)
+                ->sum('jumlah');
         }
 
-        $startDate = Carbon::now()->subDays(6)->startOfDay();
-        $endDate = Carbon::now()->endOfDay();
+        // 7. Distribusi Stok Barang per Kategori (untuk Doughnut Chart)
+        $kategoriStock = KategoriBarang::with(['barang'])->get()->map(function ($kat) {
+            return [
+                'nama' => $kat->nama,
+                'stok' => (int) $kat->barang->sum('stok_saat_ini')
+            ];
+        })->filter(function ($item) {
+            return $item['stok'] > 0;
+        })->values();
 
-        $presensiData = PresensiModel::selectRaw('DATE(created_at) as date, COUNT(*) as count')
-            ->whereBetween('created_at', [$startDate, $endDate])
-            ->groupBy('date')
-            ->orderBy('date', 'asc')
-            ->get()
-            ->keyBy('date');
-
-        $chartLabels = [];
-        $chartData = [];
-
-        for ($i = 6; $i >= 0; $i--) {
-            $date = Carbon::now()->subDays($i);
-            $dateStr = $date->format('Y-m-d');
-            $chartLabels[] = $date->locale('id')->isoFormat('dddd'); // Nama hari
-            $chartData[] = isset($presensiData[$dateStr]) ? $presensiData[$dateStr]->count : 0;
-        }
-
-        // --- Data untuk Pie Chart (Status Karyawan) ---
-        $karyawanAktif = KaryawanModel::where('status', 'aktif')->count();
-        $karyawanTidakAktif = KaryawanModel::where('status', 'tidak_aktif')->count();
+        $kategoriLabels = $kategoriStock->pluck('nama')->toArray();
+        $kategoriData = $kategoriStock->pluck('stok')->toArray();
 
         return view('admin.dashboard_admin', compact(
             'totalKaryawan',
             'kehadiranHariIni',
             'perizinanPending',
-            'penggajianBulanIni',
-            'chartLabels',
-            'chartData',
-            'karyawanAktif',
-            'karyawanTidakAktif'
+            'pendapatanBulanIni',
+            'totalStokBarang',
+            'financialLabels',
+            'incomeData',
+            'expenseData',
+            'kategoriLabels',
+            'kategoriData'
         ));
     }
 }
+

@@ -2,8 +2,23 @@
 
 @section('content')
     <div class="px-6 py-8">
-        <div class="max-w-6xl mx-auto">
-            <h1 class="text-3xl font-bold text-gray-800 mb-6">Persetujuan Kehadiran (Izin & Sakit)</h1>
+        <div class="max-w-6xl mx-auto mt-5">
+            <div
+                class="bg-red-800 text-white rounded-2xl px-8 py-6 shadow-md flex flex-col md:flex-row md:items-center md:justify-between gap-4 mb-2">
+                <div>
+                    <h1 class="text-2xl md:text-3xl font-bold tracking-tight">
+                        Persetujuan Kehadiran
+                    </h1>
+                </div>
+                <div
+                    class="flex items-center justify-center w-14 h-14 rounded-2xl bg-red-100 text-red-700 shadow-sm shrink-0">
+                    <svg xmlns="http://www.w3.org/2000/svg" class="w-7 h-7" fill="none" viewBox="0 0 24 24"
+                        stroke="currentColor">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                            d="M9 12h6m-3-3v6m8 0A9 9 0 1112 3a9 9 0 019 9z" />
+                    </svg>
+                </div>
+            </div>
 
             @if(session('success'))
                 <div class="bg-green-100 border border-green-400 text-green-700 px-4 py-3 rounded relative mb-4">
@@ -44,7 +59,8 @@
                                                 </div>
                                             </div>
                                             <div class="ml-4">
-                                                <div class="text-sm font-medium text-gray-900">{{ $p->karyawan->nama ?? 'Unknown' }}
+                                                <div class="text-sm font-medium text-gray-900">
+                                                    {{ $p->karyawan->nama ?? 'Unknown' }}
                                                 </div>
                                                 <div class="text-sm text-gray-500">{{ $p->karyawan->jabatan }}</div>
                                             </div>
