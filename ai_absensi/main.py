@@ -1,7 +1,7 @@
 from fastapi import FastAPI, HTTPException
 from pydantic import BaseModel
 import base64, numpy as np, cv2, sqlite3, pickle, os, glob
-from sklearn.preprocessing import StandardScaler
+
 import os
 import asyncio
 
@@ -13,9 +13,8 @@ class AttendanceRequest(BaseModel):
 
 loaded_count = 0
 
-# Models
-face_cascade = cv2.CascadeClassifier(cv2.data.haarcascades + 'haarcascade_frontalface_default.xml')
-eye_cascade = cv2.CascadeClassifier(cv2.data.haarcascades + 'haarcascade_eye.xml')
+# pyrefly: ignore [missing-import]
+import face_recognition
 
 def base64_to_image(b64str):
     try:
@@ -24,22 +23,21 @@ def base64_to_image(b64str):
     except: return None
 
 def extract_features(img):
-    gray = cv2.cvtColor(img, cv2.COLOR_BGR2GRAY)
-    faces = face_cascade.detectMultiScale(gray, 1.1, 4)
-    if len(faces) == 0: return None
+    # Convert BGR (OpenCV) to RGB (face_recognition)
+    rgb_img = cv2.cvtColor(img, cv2.COLOR_BGR2RGB)
+    rgb_img = np.ascontiguousarray(rgb_img, dtype=np.uint8)
     
-    x, y, w, h = faces[0]
-    roi = gray[y:y+h, x:x+w]
-    
-    features = [
-        min(w*h/(img.shape[0]*img.shape[1]), 0.5),
-        min(abs((x+w/2)/img.shape[1]-0.5), 0.3),
-        min(abs((y+h/2)/img.shape[0]-0.5), 0.3),
-        min(abs(w/h-1.0), 0.5),
-        min(np.std(roi)/50.0, 1.0),
-        1.0 if len(eye_cascade.detectMultiScale(roi)) > 0 else 0.0
-    ]
-    return np.array(features)
+    # Cari lokasi wajah
+    face_locations = face_recognition.face_locations(rgb_img)
+    if not face_locations:
+        return None
+        
+    # Ekstrak facial embeddings (128-dimensi)
+    face_encodings = face_recognition.face_encodings(rgb_img, face_locations)
+    if not face_encodings:
+        return None
+        
+    return face_encodings[0]
 
 # Database
 conn = sqlite3.connect('faces.db', check_same_thread=False)
@@ -112,18 +110,27 @@ def attendance(req: AttendanceRequest):
     if img is None: raise HTTPException(400, "Invalid image")
     
     curr_sig = extract_features(img)
-    if curr_sig is None: raise HTTPException(400, "No face")
+    if curr_sig is None: raise HTTPException(400, "No face detected in the image")
     
-    scaler = StandardScaler()
-    scaler.fit([s[:5] for s in stored_sigs])
-    distances = [np.mean(np.abs(scaler.transform([s[:5]])[0] - scaler.transform([curr_sig[:5]])[0])) 
-                 for s in stored_sigs]
+    # Calculate Euclidean distance using face_recognition
+    distances = face_recognition.face_distance(stored_sigs, curr_sig)
+    
+    if len(distances) == 0:
+        raise HTTPException(500, "Corrupted stored signatures")
+        
     best_dist = min(distances)
     
+    # Threshold for face_recognition is generally 0.6. Lower is stricter.
+    # We use 0.5 for better accuracy.
+    is_match = bool(best_dist <= 0.5)
+    
+    # Calculate confidence as percentage (e.g., 85.5)
+    confidence_percent = round(float(max(0, 1 - best_dist)) * 100, 1)
+    
     return {
-        "match": bool(best_dist < 0.35),  # ← GANTI INI
+        "match": is_match,
         "nama": nama,
-        "confidence": float(1 - best_dist),
+        "confidence": confidence_percent,
         "distance": float(best_dist),
         "debug": {"distances": [float(d) for d in distances]}
     }

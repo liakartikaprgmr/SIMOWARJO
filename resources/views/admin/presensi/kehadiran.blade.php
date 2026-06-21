@@ -81,6 +81,7 @@
                             <th class="px-6 py-4 font-semibold text-center">Masuk</th>
                             <th class="px-6 py-4 font-semibold text-center">Pulang</th>
                             <th class="px-6 py-4 font-semibold text-center">Status</th>
+                            <th class="px-6 py-4 font-semibold text-center">Aksi</th>
                         </tr>
                     </thead>
                     <tbody class="divide-y divide-gray-100">
@@ -121,10 +122,21 @@
                                     <span
                                         class="bg-green-100 text-green-700 text-xs px-2.5 py-1 rounded-full font-medium">Hadir</span>
                                 </td>
+                                <td class="px-6 py-4 text-center">
+                                    <form action="{{ route('admin.presensi.kehadiran.delete', ['id_karyawan' => $row->id_karyawan, 'tanggal' => $row->tanggal]) }}" method="POST" onsubmit="return confirm('Yakin ingin menghapus absensi karyawan ini pada tanggal tersebut? Foto juga akan terhapus.')">
+                                        @csrf
+                                        @method('DELETE')
+                                        <button type="submit" class="bg-red-50 text-red-600 hover:bg-red-100 px-3 py-1.5 rounded-lg text-xs font-semibold transition flex items-center justify-center gap-1 mx-auto">
+                                            <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16" />
+                                            </svg>
+                                        </button>
+                                    </form>
+                                </td>
                             </tr>
                         @empty
                             <tr>
-                                <td colspan="5" class="px-6 py-8 text-center text-gray-500">
+                                <td colspan="6" class="px-6 py-8 text-center text-gray-500">
                                     <svg xmlns="http://www.w3.org/2000/svg" class="h-10 w-10 mx-auto text-gray-300 mb-2"
                                         fill="none" viewBox="0 0 24 24" stroke="currentColor">
                                         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"

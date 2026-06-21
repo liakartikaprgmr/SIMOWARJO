@@ -76,6 +76,7 @@ Route::middleware(['auth.check', 'role:supervisor,leader_shift'])->group(functio
         // Presensi Wajah & Kehadiran
         Route::get('/presensi-wajah', [PresensiController::class, 'adminPresensi'])->name('presensi_wajah');
         Route::get('/presensi/kehadiran', [PresensiController::class, 'daftarKehadiran'])->name('presensi.kehadiran');
+        Route::delete('/presensi/kehadiran/{id_karyawan}/{tanggal}', [PresensiController::class, 'deleteKehadiran'])->name('presensi.kehadiran.delete');
 
         // --- SUPERVISOR---
         Route::middleware('role:supervisor')->group(function () {

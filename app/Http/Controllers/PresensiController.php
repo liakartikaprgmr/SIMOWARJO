@@ -299,4 +299,36 @@ class PresensiController extends Controller
             'tidakHadir'
         ));
     }
+
+    public function deleteKehadiran($id_karyawan, $tanggal)
+    {
+        try {
+            // Cari semua data absensi karyawan tersebut pada tanggal tersebut
+            $presensi = PresensiModel::where('id_karyawan', $id_karyawan)
+                ->whereDate('created_at', $tanggal)
+                ->get();
+
+            if ($presensi->isEmpty()) {
+                return redirect()->back()->with('error', 'Data kehadiran tidak ditemukan.');
+            }
+
+            // Hapus file foto terkait dari storage jika ada
+            foreach ($presensi as $p) {
+                if ($p->foto_absensi && Storage::disk('public')->exists($p->foto_absensi)) {
+                    Storage::disk('public')->delete($p->foto_absensi);
+                }
+            }
+
+            // Hapus record dari database
+            PresensiModel::where('id_karyawan', $id_karyawan)
+                ->whereDate('created_at', $tanggal)
+                ->delete();
+
+            return redirect()->back()->with('success', 'Data kehadiran berhasil dihapus beserta fotonya.');
+        } catch (\Exception $e) {
+            Log::error('Error menghapus kehadiran: ' . $e->getMessage());
+            return redirect()->back()->with('error', 'Terjadi kesalahan saat menghapus data kehadiran.');
+        }
+    }
 }
+
