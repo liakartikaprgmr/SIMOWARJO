@@ -76,7 +76,7 @@
                     </svg>
                     Dashboard
                 </a>
-                @if(auth()->check() && (auth()->user()->role == 'supervisor' || auth()->user()->role == 'admin'))
+                @if(auth()->check() && (auth()->user()->role == 'supervisor' || auth()->user()->role == 'admin' || auth()->user()->role == 'leader_shift'))
                     <a href="{{ route('admin.presensi_wajah') }}"
                         class="flex items-center gap-2 p-2 rounded-lg hover:bg-red-700 mt-2">
                         <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24">
@@ -89,6 +89,17 @@
                             class="ml-auto text-[10px] px-2 py-0.5 rounded-full bg-blue-500/20 text-blue-300 font-semibold">
                             AI
                         </span>
+                    </a>
+                @endif
+
+                @if(auth()->check() && auth()->user()->role == 'leader_shift')
+                    <a href="{{ route('karyawan.jadwal_kerja') }}"
+                        class="flex items-center gap-2 p-2 rounded-lg hover:bg-red-700 mt-2">
+                        <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24">
+                            <path fill="currentColor"
+                                d="M19 4h-1V2h-2v2H8V2H6v2H5c-1.11 0-1.99.9-1.99 2L3 20a2 2 0 0 0 2 2h14c1.1 0 2-.9 2-2V6c0-1.1-.9-2-2-2m0 16H5V10h14zM9 14H7v-2h2zm4 0h-2v-2h2zm4 0h-2v-2h2zm-8 4H7v-2h2zm4 0h-2v-2h2zm4 0h-2v-2h2z" />
+                        </svg>
+                        Jadwal Kerja Anda
                     </a>
                 @endif
             </div>
@@ -104,150 +115,152 @@
                     Kelola Karyawan
                 </a>
 
-                <!-- Dropdown Kelola Geolokasi -->
-                <div>
-                    <a href="{{ route('admin.geolokasi.index') }}"
-                        class="w-full flex items-center gap-2 p-2 rounded-lg hover:bg-red-700 focus:outline-none mt-2">
-                        <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24">
-                            <path fill="currentColor"
-                                d="M12 2C8.13 2 5 5.13 5 9c0 5.25 7 13 7 13s7-7.75 7-13c0-3.87-3.13-7-7-7zm0 9.5c-1.38 0-2.5-1.12-2.5-2.5s1.12-2.5 2.5-2.5s2.5 1.12 2.5 2.5s-1.12 2.5-2.5 2.5z" />
-                        </svg>
-                        <span>Kelola Geolokasi</span>
-                    </a>
-                </div>
+                @if(auth()->check() && auth()->user()->role == 'supervisor')
+                    <!-- Dropdown Kelola Geolokasi -->
+                    <div>
+                        <a href="{{ route('admin.geolokasi.index') }}"
+                            class="w-full flex items-center gap-2 p-2 rounded-lg hover:bg-red-700 focus:outline-none mt-2">
+                            <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24">
+                                <path fill="currentColor"
+                                    d="M12 2C8.13 2 5 5.13 5 9c0 5.25 7 13 7 13s7-7.75 7-13c0-3.87-3.13-7-7-7zm0 9.5c-1.38 0-2.5-1.12-2.5-2.5s1.12-2.5 2.5-2.5s2.5 1.12 2.5 2.5s-1.12 2.5-2.5 2.5z" />
+                            </svg>
+                            <span>Kelola Geolokasi</span>
+                        </a>
+                    </div>
 
-                <!-- Dropdown Kelola Penjadwalan -->
-                <div>
-                    <button id="jadwalBtn"
-                        class="w-full flex items-center justify-between p-2 rounded-lg hover:bg-red-700 focus:outline-none">
-                        <div class="flex items-center gap-2">
-                            <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24">
-                                <path fill="currentColor"
-                                    d="M12 22H5a2 2 0 0 1-2-2l.01-14c0-1.1.88-2 1.99-2h1V3c0-.55.45-1 1-1s1 .45 1 1v1h8V3c0-.55.45-1 1-1s1 .45 1 1v1h1c1.1 0 2 .9 2 2v6h-2v-2H5v10h7zm10.13-5.01l.71-.71a.996.996 0 0 0 0-1.41l-.71-.71a.996.996 0 0 0-1.41 0l-.71.71zm-.71.71l-5.01 5.01c-.18.18-.44.29-.7.29H14.5c-.28 0-.5-.22-.5-.5v-1.21c0-.27.11-.52.29-.71l5.01-5.01z" />
+                    <!-- Dropdown Kelola Penjadwalan -->
+                    <div>
+                        <button id="jadwalBtn"
+                            class="w-full flex items-center justify-between p-2 rounded-lg hover:bg-red-700 focus:outline-none">
+                            <div class="flex items-center gap-2">
+                                <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24">
+                                    <path fill="currentColor"
+                                        d="M12 22H5a2 2 0 0 1-2-2l.01-14c0-1.1.88-2 1.99-2h1V3c0-.55.45-1 1-1s1 .45 1 1v1h8V3c0-.55.45-1 1-1s1 .45 1 1v1h1c1.1 0 2 .9 2 2v6h-2v-2H5v10h7zm10.13-5.01l.71-.71a.996.996 0 0 0 0-1.41l-.71-.71a.996.996 0 0 0-1.41 0l-.71.71zm-.71.71l-5.01 5.01c-.18.18-.44.29-.7.29H14.5c-.28 0-.5-.22-.5-.5v-1.21c0-.27.11-.52.29-.71l5.01-5.01z" />
+                                </svg>
+                                <span>Kelola Penjadwalan</span>
+                            </div>
+                            <svg id="jadwalIcon" class="w-4 h-4 transition-transform duration-200"
+                                xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7" />
                             </svg>
-                            <span>Kelola Penjadwalan</span>
+                        </button>
+                        <!-- Sub-menu -->
+                        <div id="jadwalDropdown" class="hidden mt-1 space-y-1 pl-4">
+                            <a href="{{ route('admin.penjadwalan.create') }}"
+                                class="flex items-center gap-2 p-2 rounded-lg hover:bg-red-700 text-sm">
+                                <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24">
+                                    <path fill="currentColor"
+                                        d="M19 3h-1V1h-2v2H8V1H6v2H5c-1.11 0-1.99.9-1.99 2L3 19c0 1.1.89 2 2 2h14c1.1 0 2-.9 2-2V5c0-1.1-.9-2-2-2zm0 16H5V8h14v11zM7 10h5v5H7v-5z" />
+                                </svg>
+                                Jadwal Shift
+                            </a>
+                            <a href="{{ route('admin.penjadwalan.index') }}"
+                                class="flex items-center gap-2 p-2 rounded-lg hover:bg-red-700 text-sm">
+                                <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24">
+                                    <path fill="currentColor"
+                                        d="M19 3h-1V2c0-.55-.45-1-1-1s-1 .45-1 1v1H8V2c0-.55-.45-1-1-1s-1 .45-1 1v1H5a2 2 0 0 0-2 2v14c0 1.1.9 2 2 2h14c1.1 0 2-.9 2-2V5c0-1.1-.9-2-2-2m-7 3c1.66 0 3 1.34 3 3s-1.34 3-3 3s-3-1.34-3-3s1.34-3 3-3m6 12H6v-1c0-2 4-3.1 6-3.1s6 1.1 6 3.1z" />
+                                </svg>
+                                Lihat Jadwal
+                            </a>
                         </div>
-                        <svg id="jadwalIcon" class="w-4 h-4 transition-transform duration-200"
-                            xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7" />
-                        </svg>
-                    </button>
-                    <!-- Sub-menu -->
-                    <div id="jadwalDropdown" class="hidden mt-1 space-y-1 pl-4">
-                        <a href="{{ route('admin.penjadwalan.create') }}"
-                            class="flex items-center gap-2 p-2 rounded-lg hover:bg-red-700 text-sm">
-                            <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24">
-                                <path fill="currentColor"
-                                    d="M19 3h-1V1h-2v2H8V1H6v2H5c-1.11 0-1.99.9-1.99 2L3 19c0 1.1.89 2 2 2h14c1.1 0 2-.9 2-2V5c0-1.1-.9-2-2-2zm0 16H5V8h14v11zM7 10h5v5H7v-5z" />
-                            </svg>
-                            Jadwal Shift
-                        </a>
-                        <a href="{{ route('admin.penjadwalan.index') }}"
-                            class="flex items-center gap-2 p-2 rounded-lg hover:bg-red-700 text-sm">
-                            <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24">
-                                <path fill="currentColor"
-                                    d="M19 3h-1V2c0-.55-.45-1-1-1s-1 .45-1 1v1H8V2c0-.55-.45-1-1-1s-1 .45-1 1v1H5a2 2 0 0 0-2 2v14c0 1.1.9 2 2 2h14c1.1 0 2-.9 2-2V5c0-1.1-.9-2-2-2m-7 3c1.66 0 3 1.34 3 3s-1.34 3-3 3s-3-1.34-3-3s1.34-3 3-3m6 12H6v-1c0-2 4-3.1 6-3.1s6 1.1 6 3.1z" />
-                            </svg>
-                            Lihat Jadwal
-                        </a>
                     </div>
-                </div>
 
-                <!-- Dropdown Kelola Penggajian -->
-                <div>
-                    <button id="gajiBtn"
-                        class="w-full flex items-center justify-between p-2 rounded-lg hover:bg-red-700 focus:outline-none">
-                        <div class="flex items-center gap-2">
-                            <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24">
-                                <path fill="currentColor"
-                                    d="M11.8 10.9c-2.27-.59-3-1.2-3-2.15c0-1.09 1.01-1.85 2.7-1.85c1.78 0 2.44.85 2.5 2.1h2.21c-.07-1.72-1.12-3.3-3.21-3.81V3h-3v2.16c-1.94.42-3.5 1.68-3.5 3.61c0 2.31 1.91 3.46 4.7 4.13c2.5.6 3 1.48 3 2.41c0 .69-.49 1.79-2.7 1.79c-2.06 0-2.87-.92-2.98-2.1h-2.2c.12 2.19 1.76 3.42 3.68 3.83V21h3v-2.15c1.95-.37 3.5-1.5 3.5-3.55c0-2.84-2.43-3.81-4.7-4.4" />
+                    <!-- Dropdown Kelola Penggajian -->
+                    <div>
+                        <button id="gajiBtn"
+                            class="w-full flex items-center justify-between p-2 rounded-lg hover:bg-red-700 focus:outline-none">
+                            <div class="flex items-center gap-2">
+                                <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24">
+                                    <path fill="currentColor"
+                                        d="M11.8 10.9c-2.27-.59-3-1.2-3-2.15c0-1.09 1.01-1.85 2.7-1.85c1.78 0 2.44.85 2.5 2.1h2.21c-.07-1.72-1.12-3.3-3.21-3.81V3h-3v2.16c-1.94.42-3.5 1.68-3.5 3.61c0 2.31 1.91 3.46 4.7 4.13c2.5.6 3 1.48 3 2.41c0 .69-.49 1.79-2.7 1.79c-2.06 0-2.87-.92-2.98-2.1h-2.2c.12 2.19 1.76 3.42 3.68 3.83V21h3v-2.15c1.95-.37 3.5-1.5 3.5-3.55c0-2.84-2.43-3.81-4.7-4.4" />
+                                </svg>
+                                <span>Kelola Penggajian</span>
+                            </div>
+                            <svg id="gajiIcon" class="w-4 h-4 transition-transform duration-200"
+                                xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7" />
                             </svg>
-                            <span>Kelola Penggajian</span>
+                        </button>
+                        <!-- Sub-menu -->
+                        <div id="gajiDropdown" class="hidden mt-1 space-y-1 pl-4">
+                            <a href="{{ route('admin.penggajian.komponen_gaji.index') }}"
+                                class="flex items-center gap-2 p-2 rounded-lg hover:bg-red-700 text-sm">
+                                <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24">
+                                    <path fill="currentColor"
+                                        d="M3 17.25V21h3.75L17.81 9.94l-3.75-3.75L3 17.25zM20.71 7.04a.996.996 0 0 0 0-1.41l-2.34-2.34a.996.996 0 0 0-1.41 0l-1.83 1.83l3.75 3.75l1.83-1.83z" />
+                                </svg>
+                                Komponen Gaji
+                            </a>
+                            <a href="{{ route('admin.penggajian.payroll') }}"
+                                class="flex items-center gap-2 p-2 rounded-lg hover:bg-red-700 text-sm">
+                                <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24">
+                                    <path fill="currentColor"
+                                        d="M11.8 10.9c-2.27-.59-3-1.2-3-2.15c0-1.09 1.01-1.85 2.7-1.85c1.78 0 2.44.85 2.5 2.1h2.21c-.07-1.72-1.12-3.3-3.21-3.81V3h-3v2.16c-1.94.42-3.5 1.68-3.5 3.61c0 2.31 1.91 3.46 4.7 4.13c2.5.6 3 1.48 3 2.41c0 .69-.49 1.79-2.7 1.79c-2.06 0-2.87-.92-2.98-2.1h-2.2c.12 2.19 1.76 3.42 3.68 3.83V21h3v-2.15c1.95-.37 3.5-1.5 3.5-3.55c0-2.84-2.43-3.81-4.7-4.4" />
+                                </svg>
+                                Payroll
+                            </a>
+                            <a href="{{ route('admin.penggajian.slip_gaji') }}"
+                                class="flex items-center gap-2 p-2 rounded-lg hover:bg-red-700 text-sm">
+                                <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24">
+                                    <path fill="currentColor"
+                                        d="M14 2H6c-1.1 0-1.99.9-1.99 2L4 20c0 1.1.89 2 1.99 2H18c1.1 0 2-.9 2-2V8l-6-6zm2 16H8v-2h8v2zm0-4H8v-2h8v2zm-3-5V3.5L18.5 9H13z" />
+                                </svg>
+                                Slip Gaji
+                            </a>
                         </div>
-                        <svg id="gajiIcon" class="w-4 h-4 transition-transform duration-200"
-                            xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7" />
-                        </svg>
-                    </button>
-                    <!-- Sub-menu -->
-                    <div id="gajiDropdown" class="hidden mt-1 space-y-1 pl-4">
-                        <a href="{{ route('admin.penggajian.komponen_gaji.index') }}"
-                            class="flex items-center gap-2 p-2 rounded-lg hover:bg-red-700 text-sm">
-                            <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24">
-                                <path fill="currentColor"
-                                    d="M3 17.25V21h3.75L17.81 9.94l-3.75-3.75L3 17.25zM20.71 7.04a.996.996 0 0 0 0-1.41l-2.34-2.34a.996.996 0 0 0-1.41 0l-1.83 1.83l3.75 3.75l1.83-1.83z" />
-                            </svg>
-                            Komponen Gaji
-                        </a>
-                        <a href="{{ route('admin.penggajian.payroll') }}"
-                            class="flex items-center gap-2 p-2 rounded-lg hover:bg-red-700 text-sm">
-                            <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24">
-                                <path fill="currentColor"
-                                    d="M11.8 10.9c-2.27-.59-3-1.2-3-2.15c0-1.09 1.01-1.85 2.7-1.85c1.78 0 2.44.85 2.5 2.1h2.21c-.07-1.72-1.12-3.3-3.21-3.81V3h-3v2.16c-1.94.42-3.5 1.68-3.5 3.61c0 2.31 1.91 3.46 4.7 4.13c2.5.6 3 1.48 3 2.41c0 .69-.49 1.79-2.7 1.79c-2.06 0-2.87-.92-2.98-2.1h-2.2c.12 2.19 1.76 3.42 3.68 3.83V21h3v-2.15c1.95-.37 3.5-1.5 3.5-3.55c0-2.84-2.43-3.81-4.7-4.4" />
-                            </svg>
-                            Payroll
-                        </a>
-                        <a href="{{ route('admin.penggajian.slip_gaji') }}"
-                            class="flex items-center gap-2 p-2 rounded-lg hover:bg-red-700 text-sm">
-                            <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24">
-                                <path fill="currentColor"
-                                    d="M14 2H6c-1.1 0-1.99.9-1.99 2L4 20c0 1.1.89 2 1.99 2H18c1.1 0 2-.9 2-2V8l-6-6zm2 16H8v-2h8v2zm0-4H8v-2h8v2zm-3-5V3.5L18.5 9H13z" />
-                            </svg>
-                            Slip Gaji
-                        </a>
                     </div>
-                </div>
-                <!-- Dropdown Kelola Keuangan -->
-                <div>
-                    <button id="keuanganBtn"
-                        class="w-full flex items-center justify-between p-2 rounded-lg hover:bg-red-700 focus:outline-none">
-                        <div class="flex items-center gap-2">
-                            <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24">
-                                <path fill="currentColor" d="M4 9h4v11H4zm12 4h4v7h-4zm-6-9h4v16h-4z" />
+                    <!-- Dropdown Kelola Keuangan -->
+                    <div>
+                        <button id="keuanganBtn"
+                            class="w-full flex items-center justify-between p-2 rounded-lg hover:bg-red-700 focus:outline-none">
+                            <div class="flex items-center gap-2">
+                                <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24">
+                                    <path fill="currentColor" d="M4 9h4v11H4zm12 4h4v7h-4zm-6-9h4v16h-4z" />
+                                </svg>
+                                <span>Kelola Keuangan</span>
+                            </div>
+                            <svg id="keuanganIcon" class="w-4 h-4 transition-transform duration-200"
+                                xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7" />
                             </svg>
-                            <span>Kelola Keuangan</span>
+                        </button>
+                        <!-- Sub-menu -->
+                        <div id="keuanganDropdown" class="hidden mt-1 space-y-1 pl-4">
+                            <a href="{{ route('admin.kelola_keuangan.dashboard') }}"
+                                class="flex items-center gap-2 p-2 rounded-lg hover:bg-red-700 text-sm">
+                                <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24">
+                                    <path fill="currentColor"
+                                        d="M3 13h8V3H3v10zm0 8h8v-6H3v6zm10 0h8V11h-8v10zm0-18v6h8V3h-8z" />
+                                </svg>
+                                Dashboard Keuangan
+                            </a>
+                            <a href="{{ route('admin.kelola_keuangan.sales.index') }}"
+                                class="flex items-center gap-2 p-2 rounded-lg hover:bg-red-700 text-sm">
+                                <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24">
+                                    <path fill="currentColor"
+                                        d="M16 6l2.29 2.29-4.88 4.88-4-4L2 16.59 3.41 18l6-6 4 4 6.3-6.29L22 12V6z" />
+                                </svg>
+                                Penjualan Harian
+                            </a>
+                            <a href="{{ route('admin.kelola_keuangan.cashflow.index') }}"
+                                class="flex items-center gap-2 p-2 rounded-lg hover:bg-red-700 text-sm">
+                                <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24">
+                                    <path fill="currentColor"
+                                        d="M3 3h18v18H3V3zm16 16V5H5v14h14zm-4-4h-2v-2h2v2zm0-4h-2v-2h2v2zm-4 4H9v-2h2v2zm0-4H9v-2h2v2z" />
+                                </svg>
+                                Cashflow
+                            </a>
+                            <a href="{{ route('admin.kelola_keuangan.laporan') }}"
+                                class="flex items-center gap-2 p-2 rounded-lg hover:bg-red-700 text-sm">
+                                <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24">
+                                    <path fill="currentColor"
+                                        d="M19 3H5c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h14c1.1 0 2-.9 2-2V5c0-1.1-.9-2-2-2zM9 17H7v-7h2v7zm4 0h-2V7h2v10zm4 0h-2v-4h2v4z" />
+                                </svg>
+                                Laporan Kas
+                            </a>
                         </div>
-                        <svg id="keuanganIcon" class="w-4 h-4 transition-transform duration-200"
-                            xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7" />
-                        </svg>
-                    </button>
-                    <!-- Sub-menu -->
-                    <div id="keuanganDropdown" class="hidden mt-1 space-y-1 pl-4">
-                        <a href="{{ route('admin.kelola_keuangan.dashboard') }}"
-                            class="flex items-center gap-2 p-2 rounded-lg hover:bg-red-700 text-sm">
-                            <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24">
-                                <path fill="currentColor"
-                                    d="M3 13h8V3H3v10zm0 8h8v-6H3v6zm10 0h8V11h-8v10zm0-18v6h8V3h-8z" />
-                            </svg>
-                            Dashboard Keuangan
-                        </a>
-                        <a href="{{ route('admin.kelola_keuangan.sales.index') }}"
-                            class="flex items-center gap-2 p-2 rounded-lg hover:bg-red-700 text-sm">
-                            <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24">
-                                <path fill="currentColor"
-                                    d="M16 6l2.29 2.29-4.88 4.88-4-4L2 16.59 3.41 18l6-6 4 4 6.3-6.29L22 12V6z" />
-                            </svg>
-                            Penjualan Harian
-                        </a>
-                        <a href="{{ route('admin.kelola_keuangan.cashflow.index') }}"
-                            class="flex items-center gap-2 p-2 rounded-lg hover:bg-red-700 text-sm">
-                            <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24">
-                                <path fill="currentColor"
-                                    d="M3 3h18v18H3V3zm16 16V5H5v14h14zm-4-4h-2v-2h2v2zm0-4h-2v-2h2v2zm-4 4H9v-2h2v2zm0-4H9v-2h2v2z" />
-                            </svg>
-                            Cashflow
-                        </a>
-                        <a href="{{ route('admin.kelola_keuangan.laporan') }}"
-                            class="flex items-center gap-2 p-2 rounded-lg hover:bg-red-700 text-sm">
-                            <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24">
-                                <path fill="currentColor"
-                                    d="M19 3H5c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h14c1.1 0 2-.9 2-2V5c0-1.1-.9-2-2-2zM9 17H7v-7h2v7zm4 0h-2V7h2v10zm4 0h-2v-4h2v4z" />
-                            </svg>
-                            Laporan Kas
-                        </a>
                     </div>
-                </div>
+                @endif
             </div>
 
 
@@ -284,34 +297,36 @@
                     </div>
                 </div>
 
-                <!-- Dropdown Kelola Perizinan -->
-                <div>
-                    <button id="perizinanBtn"
-                        class="w-full flex items-center justify-between p-2 rounded-lg hover:bg-red-700 focus:outline-none mt-2">
-                        <div class="flex items-center gap-2">
-                            <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24">
-                                <path fill="currentColor"
-                                    d="M19 3H5c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h14c1.1 0 2-.9 2-2V5c0-1.1-.9-2-2-2zM9 17H7v-7h2v7zm4 0h-2V7h2v10zm4 0h-2v-4h2v4z" />
+                @if(auth()->check() && auth()->user()->role == 'supervisor')
+                    <!-- Dropdown Kelola Perizinan -->
+                    <div>
+                        <button id="perizinanBtn"
+                            class="w-full flex items-center justify-between p-2 rounded-lg hover:bg-red-700 focus:outline-none mt-2">
+                            <div class="flex items-center gap-2">
+                                <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24">
+                                    <path fill="currentColor"
+                                        d="M19 3H5c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h14c1.1 0 2-.9 2-2V5c0-1.1-.9-2-2-2zM9 17H7v-7h2v7zm4 0h-2V7h2v10zm4 0h-2v-4h2v4z" />
+                                </svg>
+                                <span>Kelola Perizinan</span>
+                            </div>
+                            <svg id="perizinanIcon" class="w-4 h-4 transition-transform duration-200"
+                                xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7" />
                             </svg>
-                            <span>Kelola Perizinan</span>
+                        </button>
+                        <!-- Sub-menu -->
+                        <div id="perizinanDropdown" class="hidden mt-1 space-y-1 pl-4">
+                            <a href="{{ route('admin.perizinan.index') }}"
+                                class="flex items-center gap-2 p-2 rounded-lg hover:bg-red-700 text-sm">
+                                <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24">
+                                    <path fill="currentColor"
+                                        d="M22 5.18L10.59 16.6l-4.24-4.24l1.41-1.41l2.83 2.83l10-10zM12 20c-4.41 0-8-3.59-8-8s3.59-8 8-8c1.57 0 3.04.46 4.28 1.25l1.45-1.45A10 10 0 0 0 12 2C6.48 2 2 6.48 2 12s4.48 10 10 10c1.73 0 3.36-.44 4.78-1.22l-1.5-1.5c-1 .46-2.11.72-3.28.72m7-5h-3v2h3v3h2v-3h3v-2h-3v-3h-2z" />
+                                </svg>
+                                Persetujuan Izin & Sakit
+                            </a>
                         </div>
-                        <svg id="perizinanIcon" class="w-4 h-4 transition-transform duration-200"
-                            xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7" />
-                        </svg>
-                    </button>
-                    <!-- Sub-menu -->
-                    <div id="perizinanDropdown" class="hidden mt-1 space-y-1 pl-4">
-                        <a href="{{ route('admin.perizinan.index') }}"
-                            class="flex items-center gap-2 p-2 rounded-lg hover:bg-red-700 text-sm">
-                            <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24">
-                                <path fill="currentColor"
-                                    d="M22 5.18L10.59 16.6l-4.24-4.24l1.41-1.41l2.83 2.83l10-10zM12 20c-4.41 0-8-3.59-8-8s3.59-8 8-8c1.57 0 3.04.46 4.28 1.25l1.45-1.45A10 10 0 0 0 12 2C6.48 2 2 6.48 2 12s4.48 10 10 10c1.73 0 3.36-.44 4.78-1.22l-1.5-1.5c-1 .46-2.11.72-3.28.72m7-5h-3v2h3v3h2v-3h3v-2h-3v-3h-2z" />
-                            </svg>
-                            Persetujuan Izin & Sakit
-                        </a>
                     </div>
-                </div>
+                @endif
 
                 <!-- Dropdown Kelola Stok Barang -->
                 <div>
@@ -366,10 +381,13 @@
         const menuBtn = document.getElementById('menuBtn');
         const sidebar = document.getElementById('sidebar');
         const contentWrapper = document.getElementById('contentWrapper');
-        menuBtn.addEventListener('click', () => {
-            sidebar.classList.toggle('-translate-x-full');
-            contentWrapper.classList.toggle('ml-64');
-        });
+
+        if (menuBtn) {
+            menuBtn.addEventListener('click', () => {
+                if (sidebar) sidebar.classList.toggle('-translate-x-full');
+                if (contentWrapper) contentWrapper.classList.toggle('ml-64');
+            });
+        }
 
         const stokBtn = document.getElementById('stokBtn');
         const stokDropdown = document.getElementById('stokDropdown');
@@ -404,28 +422,34 @@
         const jadwalDropdown = document.getElementById('jadwalDropdown');
         const jadwalIcon = document.getElementById('jadwalIcon');
 
-        jadwalBtn.addEventListener('click', () => {
-            jadwalDropdown.classList.toggle('hidden');
-            jadwalIcon.classList.toggle('rotate-180');
-        });
+        if (jadwalBtn) {
+            jadwalBtn.addEventListener('click', () => {
+                jadwalDropdown.classList.toggle('hidden');
+                jadwalIcon.classList.toggle('rotate-180');
+            });
+        }
 
         const gajiBtn = document.getElementById('gajiBtn');
         const gajiDropdown = document.getElementById('gajiDropdown');
         const gajiIcon = document.getElementById('gajiIcon');
 
-        gajiBtn.addEventListener('click', () => {
-            gajiDropdown.classList.toggle('hidden');
-            gajiIcon.classList.toggle('rotate-180');
-        });
+        if (gajiBtn) {
+            gajiBtn.addEventListener('click', () => {
+                gajiDropdown.classList.toggle('hidden');
+                gajiIcon.classList.toggle('rotate-180');
+            });
+        }
 
         const keuanganBtn = document.getElementById('keuanganBtn');
         const keuanganDropdown = document.getElementById('keuanganDropdown');
         const keuanganIcon = document.getElementById('keuanganIcon');
 
-        keuanganBtn.addEventListener('click', () => {
-            keuanganDropdown.classList.toggle('hidden');
-            keuanganIcon.classList.toggle('rotate-180');
-        });
+        if (keuanganBtn) {
+            keuanganBtn.addEventListener('click', () => {
+                keuanganDropdown.classList.toggle('hidden');
+                keuanganIcon.classList.toggle('rotate-180');
+            });
+        }
 
         // Profile Dropdown Toggle
         const profileBtn = document.getElementById('profileBtn');

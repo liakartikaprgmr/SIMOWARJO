@@ -1,7 +1,7 @@
-@extends('karyawan.layoutempl')
+@extends(auth()->user()->role == 'leader_shift' || auth()->user()->role == 'supervisor' ? 'admin.layout' : 'karyawan.layoutempl')
 
 @section('content')
-    <div class="container mx-auto px-4 sm:px-6 lg:px-8 mt-15 mb-10">
+    <div class="container mx-auto px-4 sm:px-6 lg:px-8 {{ (auth()->user()->role == 'leader_shift' || auth()->user()->role == 'supervisor') ? 'mt-20 md:mt-12' : 'mt-4 md:mt-0' }} mb-10">
         <div class="mb-2"> 
             <div class="bg-blue-50/80 border border-blue-100 p-5 rounded-2xl shadow-sm flex items-start sm:items-center">
                 <div class="bg-white p-2 rounded-xl shadow-sm border border-blue-50 mr-4">

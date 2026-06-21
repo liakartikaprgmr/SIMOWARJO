@@ -83,6 +83,13 @@
             Sudah punya akun?
             <a href="/login" class="text-green-600 font-semibold">Login</a>
         </p>
+
+        <!-- Kembali ke Home -->
+        <div class="text-center mt-3">
+            <a href="/" class="text-sm text-gray-500 hover:text-red-700 underline font-medium">
+                Kembali
+            </a>
+        </div>
     </div>
 
 </body>

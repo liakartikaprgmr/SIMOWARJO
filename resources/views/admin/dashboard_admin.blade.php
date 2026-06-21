@@ -215,6 +215,7 @@
 
         </div>
 
+        @if(auth()->check() && auth()->user()->role == 'supervisor')
         <!-- QUICK ACCESS / QUICK ACTIONS CONTROL CENTER -->
         <div class="bg-white p-8 rounded-3xl shadow-sm border border-gray-100">
             <div class="mb-6">
@@ -295,6 +296,7 @@
                 </a>
             </div>
         </div>
+        @endif
 
     </div>
 
