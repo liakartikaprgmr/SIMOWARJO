@@ -10,41 +10,62 @@
 
 <body class="bg-gray-100">
     <!-- NAVBAR -->
-    <header class="fixed top-0 left-0 right-0 h-16 bg-white shadow flex items-center justify-between px-6 z-50">
+    <header class="fixed top-0 left-0 right-0 h-16 bg-white shadow flex items-center justify-between px-3 md:px-6 z-50">
         <!-- LOGO -->
-        <div class="flex items-center gap-3">
-            <!-- HAMBURGER (mobile) -->
-            <button id="menuBtn" class="md:hidden text-2xl">
+        <div class="flex items-center gap-2 min-w-0">
+            <!-- HAMBURGER MOBILE -->
+            <button id="menuBtn" class="md:hidden text-2xl flex-shrink-0">
                 <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24">
                     <path fill="currentColor"
                         d="M4 18h16c.55 0 1-.45 1-1s-.45-1-1-1H4c-.55 0-1 .45-1 1s.45 1 1 1m0-5h16c.55 0 1-.45 1-1s-.45-1-1-1H4c-.55 0-1 .45-1 1s.45 1 1 1M3 7c0 .55.45 1 1 1h16c.55 0 1-.45 1-1s-.45-1-1-1H4c-.55 0-1 .45-1 1" />
                 </svg>
             </button>
-
-            <img src="{{ asset('assets/logo.png') }}" class="w-10 h-10" alt="">
-            <h1 class="font-bold text-lg text-red-800">SIMOWARJO</h1>
+            <!-- LOGO -->
+            <img src="{{ asset('assets/logo.png') }}" class="w-8 h-8 md:w-10 md:h-10 flex-shrink-0" alt="Logo">
+            <!-- JUDUL -->
+            <h1 class="font-bold text-sm md:text-lg text-red-800 whitespace-nowrap">
+                SIMOWARJO
+            </h1>
         </div>
 
-        <!-- PROFILE & LOGOUT -->
+        <!-- PROFILE -->
         @php $user = auth()->user(); @endphp
-        <div class="relative">
+
+        <div class="relative flex-shrink-0">
             <button id="profileBtn"
-                class="flex items-center gap-2 focus:outline-none hover:bg-gray-50 p-2 rounded-lg transition">
+                class="flex items-center gap-2 hover:bg-gray-50 rounded-lg p-1 md:p-2 transition max-w-[170px] md:max-w-none">
+                <!-- FOTO -->
                 <img src="{{ $user?->foto ? url($user->foto) : 'https://i.pravatar.cc/40' }}"
-                    class="w-10 h-10 rounded-full object-cover" alt="Profile">
-                <div class="text-sm text-left">
-                    <p class="font-semibold">{{ $user?->nama ?? 'Guest User' }}</p>
-                    <p class="text-gray-500 text-xs leading-tight">{{ $user?->email ?? 'Not Logged In' }}</p>
+                    class="w-8 h-8 md:w-10 md:h-10 rounded-full object-cover flex-shrink-0" alt="Profile">
+                <!-- NAMA & EMAIL -->
+                <div class="text-left overflow-hidden">
+                    <p class="font-semibold text-xs md:text-sm truncate">
+                        {{ $user?->nama ?? 'Guest User' }}
+                    </p>
+                    <p class="hidden md:block text-gray-500 text-xs truncate">
+                        {{ $user?->email ?? 'Not Logged In' }}
+                    </p>
                 </div>
-                <svg xmlns="http://www.w3.org/2000/svg" class="w-4 h-4 text-gray-500 ml-1" fill="none"
-                    viewBox="0 0 24 24" stroke="currentColor">
+
+                <!-- ICON DROPDOWN -->
+                <svg xmlns="http://www.w3.org/2000/svg" class="hidden md:block w-4 h-4 text-gray-500 flex-shrink-0"
+                    fill="none" viewBox="0 0 24 24" stroke="currentColor">
                     <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7" />
                 </svg>
             </button>
 
             @if(auth()->check())
                 <div id="profileDropdown"
-                    class="hidden absolute right-0 mt-1 w-48 bg-white border border-gray-100 rounded-lg shadow-lg py-2 z-50">
+                    class="hidden absolute right-0 mt-2 w-56 bg-white border border-gray-100 rounded-lg shadow-lg py-2 z-50">
+                    <div class="px-4 py-2 border-b">
+                        <p class="font-semibold text-sm">
+                            {{ $user?->nama }}
+                        </p>
+                        <p class="text-xs text-gray-500 break-all">
+                            {{ $user?->email }}
+                        </p>
+                    </div>
+
                     <form action="{{ route('logout') }}" method="POST">
                         @csrf
                         <button type="submit"
@@ -376,16 +397,26 @@
         </nav>
     </aside>
 
+    <div id="sidebarOverlay" class="fixed inset-0 bg-black/50 hidden z-30 md:hidden">
+    </div>
+
     <!-- SCRIPT SIDEBAR -->
     <script>
         const menuBtn = document.getElementById('menuBtn');
         const sidebar = document.getElementById('sidebar');
-        const contentWrapper = document.getElementById('contentWrapper');
+        const overlay = document.getElementById('sidebarOverlay');
 
         if (menuBtn) {
             menuBtn.addEventListener('click', () => {
-                if (sidebar) sidebar.classList.toggle('-translate-x-full');
-                if (contentWrapper) contentWrapper.classList.toggle('ml-64');
+                sidebar.classList.toggle('-translate-x-full');
+                overlay.classList.toggle('hidden');
+            });
+        }
+
+        if (overlay) {
+            overlay.addEventListener('click', () => {
+                sidebar.classList.add('-translate-x-full');
+                overlay.classList.add('hidden');
             });
         }
 
@@ -450,6 +481,7 @@
                 keuanganIcon.classList.toggle('rotate-180');
             });
         }
+
 
         // Profile Dropdown Toggle
         const profileBtn = document.getElementById('profileBtn');
